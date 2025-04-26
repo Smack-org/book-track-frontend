@@ -1,0 +1,61 @@
+import axios from "axios";
+import { addAuthInterceptor } from "./axios";
+
+const API_KEY = import.meta.env.VITE_FIREBASE_API_KEY;
+const AUTH_API_URL = `https://identitytoolkit.googleapis.com/v1/accounts/`;
+
+const api = axios.create({ baseURL: AUTH_API_URL });
+addAuthInterceptor(api);
+
+interface LoginResponse {
+  idToken: string;
+  refreshToken: string;
+  expiresIn: string;
+  localId: number;
+}
+
+interface RegisterResponse {
+  idToken: string;
+  refreshToken: string;
+  expiresIn: string;
+  localId: number;
+}
+
+export const AuthAPI = {
+  async login(email: string, password: string): Promise<LoginResponse> {
+    const payload = {
+      email,
+      password,
+      returnSequreToken: true,
+    };
+
+    const { data } = await api.post<LoginResponse>(
+      `${AUTH_API_URL}:signInWithPassword?key=${API_KEY}`,
+      payload,
+    );
+
+    return data;
+  },
+
+  async register(email: string, password: string): Promise<RegisterResponse> {
+    const payload = {
+      email,
+      password,
+      returnSecureToken: true,
+    };
+
+    const { data } = await api.post<RegisterResponse>(
+      `${AUTH_API_URL}:signUp?key=${API_KEY}`,
+      payload,
+    );
+
+    return data;
+  },
+
+  async getUser(idToken: string) {
+    const response = await api.post(`${AUTH_API_URL}:lookup?key=${API_KEY}`, {
+      idToken,
+    });
+    return response.data.users[0];
+  },
+};
