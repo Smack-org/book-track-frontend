@@ -26,7 +26,13 @@ export default defineComponent({
         this.isLogging = false;
       }
 
-      this.$router.push("/search");
+      const queryRedirect = this.$route.query.redirect;
+
+      if (queryRedirect) {
+        this.$router.replace(`/${queryRedirect}`);
+      } else {
+        this.$router.replace({ name: "search" });
+      }
     },
   },
   beforeRouteLeave(_to, _from, next) {
@@ -113,5 +119,4 @@ div.error {
   background: #fadbd8;
   border-radius: 4px;
 }
-
 </style>
