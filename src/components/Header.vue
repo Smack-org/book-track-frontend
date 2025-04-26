@@ -13,26 +13,33 @@ export default defineComponent({
 <template>
   <header>
     <div v-if="authStore.isAuthentificated">
-      hello, {{ authStore.user?.email }}
+      <div>
+        hello, {{ authStore.user?.email }}
+        <router-link
+          :to="{ name: 'login', replace: true }"
+          @click="authStore.logout"
+          >logout</router-link
+        >
+      </div>
     </div>
     <ul>
       <li v-if="!authStore.isAuthentificated">
-        <router-link :to="{name: 'login'}">login</router-link>
+        <router-link :to="{ name: 'login' }">login</router-link>
       </li>
       <li v-if="!authStore.isAuthentificated">
-        <router-link :to="{name: 'register'}">register</router-link>
+        <router-link :to="{ name: 'register' }">register</router-link>
       </li>
       <li v-if="authStore.isAuthentificated">
-        <router-link :to="{name: 'search'}">search books</router-link>
+        <router-link :to="{ name: 'search' }">search books</router-link>
       </li>
       <li v-if="authStore.isAuthentificated">
-        <router-link :to="{name: 'reading-list'}">reading list</router-link>
+        <router-link :to="{ name: 'reading-list' }">reading list</router-link>
       </li>
       <li v-if="authStore.isAuthentificated">
-        <router-link :to="{name: 'dashboard'}">dashboard</router-link>
+        <router-link :to="{ name: 'dashboard' }">dashboard</router-link>
       </li>
       <li v-if="authStore.isAuthentificated">
-        <router-link :to="{name: 'favorites'}">favorites</router-link>
+        <router-link :to="{ name: 'favorites' }">favorites</router-link>
       </li>
     </ul>
   </header>
