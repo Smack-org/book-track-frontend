@@ -24,16 +24,6 @@ const useAuthStore = defineStore("userStore", {
   },
 
   actions: {
-    async initialize() {
-      const token = TokenService.getToken();
-
-      if (token) {
-        this.token = token;
-        await this.fetchUser();
-      }
-      this.initialized = true;
-    },
-
     async login({ email, password }: AuthCreds) {
       this.loading = true;
       this.error = null;

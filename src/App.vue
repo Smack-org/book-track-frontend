@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent, onMounted } from "vue";
+import { defineComponent } from "vue";
 import useAuthStore from "./stores/auth.store";
 import Header from "./components/Header.vue";
 
@@ -7,10 +7,6 @@ export default defineComponent({
   components: { Header },
   setup() {
     const userStore = useAuthStore();
-
-    onMounted(async () => {
-      userStore.initialize();
-    });
 
     return { userStore };
   },
