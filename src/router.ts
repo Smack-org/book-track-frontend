@@ -37,8 +37,18 @@ const router = createRouter({
       meta: { needsAuth: true },
       name: "dashboard",
     },
-    { path: "/auth/login", component: LoginPage, name: "login" },
-    { path: "/auth/register", component: RegistrationPage, name: "register" },
+    {
+      path: "/auth/login",
+      component: LoginPage,
+      meta: { guestOnly: true },
+      name: "login",
+    },
+    {
+      path: "/auth/register",
+      component: RegistrationPage,
+      meta: { guestOnly: true },
+      name: "register",
+    },
     {
       path: "/book/:bookId(\\d+)",
       name: "book",
@@ -70,6 +80,12 @@ router.beforeEach(async (to) => {
     return {
       name: "login",
       query: { redirect: to.fullPath },
+    };
+  }
+
+  if (to.meta.guestOnly && authStore.isAuthentificated) {
+    return {
+      name: "search",
     };
   }
 });
