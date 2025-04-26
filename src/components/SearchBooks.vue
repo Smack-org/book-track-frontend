@@ -1,8 +1,9 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import BookList from "./BookList.vue";
-import { BookService, type BookType } from "../api/book.service";
+import { BookService } from "../api/book.service";
 import { debounce } from "lodash-es";
+import type { Book } from "../types/book";
 
 type SearchProps = {
   query: string;
@@ -14,7 +15,7 @@ export default defineComponent({
   components: { BookList },
   data() {
     return {
-      books: [] as BookType[],
+      books: [] as Book[],
       searchProps: {
         query: this.$route.query.query || "",
         sort: this.$route.query.sort || "descending",

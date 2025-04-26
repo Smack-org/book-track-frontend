@@ -1,7 +1,7 @@
 <script lang="ts">
 import { defineComponent, type PropType } from "vue";
-import { type BookType } from "../api/book.service";
 import Book from "./Book.vue";
+import type { Book as BookType } from "../types/book";
 
 export default defineComponent({
   components: { Book },

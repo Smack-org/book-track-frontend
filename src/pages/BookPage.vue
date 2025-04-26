@@ -1,7 +1,8 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import Book from "../components/Book.vue";
-import { BookService, type BookType } from "../api/book.service";
+import { BookService, } from "../api/book.service";
+import type { Book as BookType } from "../types/book";
 
 export default defineComponent({
   components: { Book },
