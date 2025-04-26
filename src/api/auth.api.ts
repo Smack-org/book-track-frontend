@@ -22,14 +22,22 @@ interface LoginResponse {
   idToken: string;
   refreshToken: string;
   expiresIn: string;
-  localId: number;
+  localId: string;
 }
 
 interface RegisterResponse {
   idToken: string;
   refreshToken: string;
   expiresIn: string;
-  localId: number;
+  localId: string;
+}
+
+interface GetUserResponse {
+  users: Array<{
+    localId: string;
+    email: string;
+    emailVerified: boolean;
+  }>;
 }
 
 export const AuthAPI = {
@@ -37,7 +45,7 @@ export const AuthAPI = {
     const payload = {
       email,
       password,
-      returnSequreToken: true,
+      returnSecureToken: true,
     };
 
     try {
@@ -72,19 +80,36 @@ export const AuthAPI = {
 
   async getUser(idToken: string) {
     try {
-      const response = await api.post(`${AUTH_API_URL}:lookup?key=${API_KEY}`, {
+      const payload = {
         idToken,
-      });
-      return response.data.users[0];
-    } catch (e) {
-      throw handleAxiosError(e);
+      };
+      const response = await api.post<GetUserResponse>(
+        `${AUTH_API_URL}:lookup?key=${API_KEY}`,
+        payload,
+      );
+
+      if (!response.data?.users?.length) {
+        throw new Error("No user data found");
+      }
+
+      return {
+        localId: response.data.users[0].localId,
+        email: response.data.users[0].email,
+      };
+    } catch (error) {
+      const handledError = handleAxiosError(error);
+      console.error("Failed to fetch user:", handledError.message);
+      throw handledError;
     }
   },
 };
 
 const handleAxiosError = (e: unknown): Error | AuthenticationError => {
   if (axios.isAxiosError(e) && e.response) {
-    return new AuthenticationError(`${e.response.status}`, e.response.data.error.message);
+    return new AuthenticationError(
+      `${e.response.status}`,
+      e.response.data.error.message,
+    );
   } else if (e instanceof Error) {
     return e;
   } else {
