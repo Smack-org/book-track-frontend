@@ -1,6 +1,6 @@
 <script lang="ts">
 import { defineComponent } from "vue";
-import useAuthStore from "../../stores/auth.store";
+import useAuthStore, { handleAuthError } from "../../stores/auth.store";
 
 export default defineComponent({
   data() {
@@ -20,7 +20,7 @@ export default defineComponent({
       try {
         await this.authStore.login(this.creds);
       } catch (e) {
-        this.error = `Failed to log in. ${e}`;
+        this.error = `Failed to log in. ${handleAuthError(e)}`;
         return;
       } finally {
         this.isLogging = false;

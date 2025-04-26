@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import type { User } from "../types/user";
-import { AuthAPI } from "../api/auth.api";
+import { AuthAPI, AuthenticationError } from "../api/auth.api";
+import { TokenService } from "./tokens.localstore";
 
 type AuthCreds = {
   email: string;
@@ -11,9 +12,10 @@ const useAuthStore = defineStore("userStore", {
   state() {
     return {
       user: null as User | null,
-      token: localStorage.getItem("idToken") || null,
+      token: TokenService.getToken() || null,
       loading: false,
       error: null as string | null,
+      initialized: false,
     };
   },
 
@@ -22,6 +24,16 @@ const useAuthStore = defineStore("userStore", {
   },
 
   actions: {
+    async initialize() {
+      const token = TokenService.getToken();
+
+      if (token) {
+        this.token = token;
+        await this.fetchUser();
+      }
+      this.initialized = true;
+    },
+
     async login({ email, password }: AuthCreds) {
       this.loading = true;
       this.error = null;
@@ -30,9 +42,9 @@ const useAuthStore = defineStore("userStore", {
 
         this.setTokens(idToken);
         this.user = { email, uid: localId };
-      } catch (error: any) {
-        this.error = error.response?.data?.error?.message || "Login failed";
-        throw error;
+      } catch (e) {
+        this.error = handleAuthError(e) || "login failed";
+        throw e;
       } finally {
         this.loading = false;
       }
@@ -42,22 +54,20 @@ const useAuthStore = defineStore("userStore", {
       this.loading = true;
       try {
         const { idToken, localId } = await AuthAPI.register(email, password);
-
         this.setTokens(idToken);
         this.user = { email, uid: localId };
-      } catch (error: any) {
-        this.error =
-          error.response?.data?.error?.message || "Registration failed";
-        throw error;
+      } catch (e: unknown) {
+        this.error = handleAuthError(e) || "registration failed";
+        throw e;
       } finally {
         this.loading = false;
       }
     },
 
-    async logout() {
+    logout() {
       this.token = null;
       this.user = null;
-      localStorage.removeItem("idToken");
+      TokenService.removeToken();
     },
 
     async fetchUser() {
@@ -66,16 +76,27 @@ const useAuthStore = defineStore("userStore", {
       try {
         const userData = await AuthAPI.getUser(this.token);
         this.user = { email: userData.email, uid: userData.localId };
-      } catch (error) {
-        await this.logout();
+      } catch (e) {
+        this.logout();
+        throw e;
       }
     },
 
     setTokens(idToken: string) {
       this.token = idToken;
-      localStorage.setItem("idToken", idToken);
+      TokenService.saveToken(idToken);
     },
   },
 });
+
+export const handleAuthError = (e: unknown): string => {
+  if (e instanceof AuthenticationError) {
+    return `${e.name}: ${e.errorCode} ${e.message}`;
+  } else if (e instanceof Error) {
+    return `Unrecognized error: ${e.message}`;
+  } else {
+    return `Unrecognized error: ${e}`;
+  }
+};
 
 export default useAuthStore;

@@ -1,6 +1,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { AuthAPI } from "../../api/auth.api";
+import { handleAuthError } from "../../stores/auth.store";
 
 export default defineComponent({
   data() {
@@ -20,7 +21,7 @@ export default defineComponent({
       try {
         await AuthAPI.register(this.creds.email, this.creds.password);
       } catch (e) {
-        this.error = `Failed to register. ${e}`;
+        this.error = `Failed to register. ${handleAuthError(e)}`;
         return;
       } finally {
         this.isLogging = false;
@@ -59,7 +60,7 @@ export default defineComponent({
     <button>register</button>
 
     <div v-if="isLogging">Logging...</div>
-    <div v-if="error && !isLogging">Error: {{ error }}</div>
+    <div v-if="error && !isLogging">{{ error }}</div>
   </form>
 </template>
 
