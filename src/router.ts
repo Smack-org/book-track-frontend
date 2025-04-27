@@ -1,13 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
-import SearchPage from "./pages/SearchPage.vue";
-import RegistrationPage from "./pages/auth/RegistrationPage.vue";
-import BookPage from "./pages/BookPage.vue";
 import NotFoundPage from "./pages/NotFoundPage.vue";
-import LoginPage from "./pages/auth/LoginPage.vue";
 import useAuthStore from "./stores/auth.store";
-import ReadingListPage from "./pages/ReadingListPage.vue";
-import FavoritesPage from "./pages/FavoritesPage.vue";
-import Dashboard from "./pages/Dashboard.vue";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -15,44 +8,44 @@ const router = createRouter({
     { path: "/", redirect: "/search" },
     {
       path: "/search",
-      component: SearchPage,
+      component: () => import("./pages/SearchPage.vue"),
       meta: { needsAuth: true },
       name: "search",
     },
     {
       path: "/reading-list",
-      component: ReadingListPage,
+      component: () => import("./pages/ReadingListPage.vue"),
       meta: { needsAuth: true },
       name: "reading-list",
     },
     {
       path: "/favorites",
-      component: FavoritesPage,
+      component: () => import("./pages/FavoritesPage.vue"),
       meta: { needsAuth: true },
       name: "favorites",
     },
     {
       path: "/dashboard",
-      component: Dashboard,
+      component: () => import("./pages/Dashboard.vue"),
       meta: { needsAuth: true },
       name: "dashboard",
     },
     {
       path: "/auth/login",
-      component: LoginPage,
+      component: () => import("./pages/auth/LoginPage.vue"),
       meta: { guestOnly: true },
       name: "login",
     },
     {
       path: "/auth/register",
-      component: RegistrationPage,
+      component: () => import("./pages/auth/RegistrationPage.vue"),
       meta: { guestOnly: true },
       name: "register",
     },
     {
       path: "/book/:bookId(\\d+)",
       name: "book",
-      component: BookPage,
+      component: () => import("./pages/BookPage.vue"),
       props: (route) => ({
         bookId: Number(route.params.bookId),
       }),
