@@ -1,4 +1,4 @@
-export const BookStatuses = ["want", "reading", "read", "none"] as const
+export const BookStatuses = ["want", "reading", "read", ""] as const
 export type BookStatus = (typeof BookStatuses)[number]
 
 export type AuthorType = {

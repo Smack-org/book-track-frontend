@@ -87,7 +87,7 @@ type ApiResponse = {
     results: BookType[]
 }
 
-type BookStatus = "want" | "reading" | "read" | "none"
+type BookStatus = "want" | "reading" | "read" | ""
 
 type BookType = {
     id: number
