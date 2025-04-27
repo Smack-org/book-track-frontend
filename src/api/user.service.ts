@@ -1,32 +1,32 @@
-import axios from "axios";
-import { addAuthInterceptor } from "./axios";
-import type { BookStatus } from "../types/book";
+import axios from "axios"
+import { addAuthInterceptor } from "./axios"
+import type { BookStatus } from "../types/book"
 
-const BASE_URL = import.meta.env.VITE_FIREBASE_DATABASE_URL;
+const BASE_URL = import.meta.env.VITE_FIREBASE_DATABASE_URL
 
-const api = axios.create({ baseURL: BASE_URL });
-addAuthInterceptor(api);
+const api = axios.create({ baseURL: BASE_URL })
+addAuthInterceptor(api)
 
 type FavoriteBooksResponse = {
-  ids: number[];
-};
+    ids: number[]
+}
 
 type BooksWithStatusesResponse = {
-  books: { [bookId: number]: BookStatus };
-};
+    books: { [bookId: number]: BookStatus }
+}
 
 export const UserService = {
-  getFavoriteBooks(): FavoriteBooksResponse {
-    return { ids: [] };
-  },
+    getFavoriteBooks(): FavoriteBooksResponse {
+        return { ids: [] }
+    },
 
-  addFavoriteBook() {},
+    addFavoriteBook() {},
 
-  removeFavoriteBook() {},
+    removeFavoriteBook() {},
 
-  getBooksWithStatuses(): BooksWithStatusesResponse {
-    return { books: {} };
-  },
+    getBooksWithStatuses(): BooksWithStatusesResponse {
+        return { books: {} }
+    },
 
-  setBookStatus() {},
-};
+    setBookStatus() {},
+}
