@@ -29,7 +29,7 @@ export default defineComponent({
 
       const queryRedirect = this.$route.query.redirect;
       if (queryRedirect) {
-        this.$router.replace(`/${queryRedirect}`);
+        this.$router.replace(`${queryRedirect}`);
       } else {
         this.$router.replace({ name: "search" });
       }
