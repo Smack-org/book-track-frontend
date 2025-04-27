@@ -42,10 +42,10 @@ export const BookService = {
         }
     },
 
-    async getBookByIds(id: number): Promise<Book[]> {
+    async getBooksByIds(ids: number[]): Promise<Book[]> {
         try {
             const response = await apiClient.get<ApiResponse>(`/`, {
-                params: { ids: id },
+                params: { ids },
             })
             return response.data.results
         } catch (error) {
