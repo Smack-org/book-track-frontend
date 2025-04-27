@@ -55,7 +55,7 @@ export default defineComponent({
         </div>
 
         <div>
-            <button @click="toggleFaforites">add to favorites</button>
+            <button @click="toggleFaforites">{{ book.is_favorite ? "remove from favorites" : "add to favorites" }}</button>
         </div>
 
         <div>
