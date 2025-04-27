@@ -37,7 +37,8 @@ export default defineComponent({
 
         <div>
             <h4>Authors</h4>
-            <ul>
+            <p v-if="book.authors.length === 0">no authors</p>
+            <ul v-else>
                 <li v-for="author in book.authors">
                     {{ author.name }}
                 </li>
