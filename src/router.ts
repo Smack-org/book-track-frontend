@@ -31,6 +31,10 @@ const router = createRouter({
             name: "dashboard",
         },
         {
+            path: "/auth",
+            redirect: "/auth/login",
+        },
+        {
             path: "/auth/login",
             component: () => import("./pages/auth/LoginPage.vue"),
             meta: { guestOnly: true },
