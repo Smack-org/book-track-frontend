@@ -3,8 +3,8 @@ export type BookStatus = (typeof BookStatuses)[number]
 
 export type AuthorType = {
     name: string
-    birth_year: number | null
-    death_year: number | null
+    birth_year?: number
+    death_year?: number
 }
 
 export type Book = {
