@@ -1,13 +1,18 @@
 <script setup lang="ts">
-import { computed, defineProps } from "vue"
-import { BookStatuses, type Book } from "../types/book.d"
+import { computed, defineProps, reactive, watch } from "vue"
+import { BookStatuses, type Book, type BookStatus } from "../types/book.d"
 
 interface Props {
     book: Book
 }
 const props = defineProps<Props>()
 
-const { book } = props
+const emit = defineEmits<{
+    (e: "updateBookFavorite", bookId: number, isFavorite: boolean): void
+    (e: "updateBookStatus", bookId: number, status: BookStatus): void
+}>()
+
+const { book } = reactive(props)
 
 const validStatuses = BookStatuses
 
@@ -15,9 +20,14 @@ const bookLink = computed(() => {
     return { name: "book", params: { bookId: `${book.id}` } }
 })
 
-const toggleFaforites = () => {
+const toggleFavorite = () => {
     book.is_favorite = !book.is_favorite
+    emit("updateBookFavorite", book.id, book.is_favorite)
 }
+
+watch(book, () => {
+    emit("updateBookStatus", book.id, book.status)
+})
 </script>
 
 <template>
@@ -48,7 +58,9 @@ const toggleFaforites = () => {
         </div>
 
         <div>
-            <button @click="toggleFaforites">{{ book.is_favorite ? "remove from favorites" : "add to favorites" }}</button>
+            <button @click="toggleFavorite">
+                {{ book.is_favorite ? "remove from favorites" : "add to favorites" }}
+            </button>
         </div>
 
         <div>
