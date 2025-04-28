@@ -1,43 +1,28 @@
-<script lang="ts">
-import { defineComponent } from "vue"
+<script setup lang="ts">
+import { onMounted, ref } from "vue"
 import Book from "../components/Book.vue"
 import { BookService } from "../api/book.service"
 import type { Book as BookType } from "../types/book"
 
-export default defineComponent({
-    components: { Book },
+const isBookLoading = ref(true)
+const book = ref<BookType | null>(null)
+const error = ref("")
+const props = defineProps({
+    bookId: { type: Number, required: true },
+})
 
-    props: {
-        bookId: {
-            type: Number,
-            required: true,
-        },
-    },
+async function loadBook(bookId: number) {
+    try {
+        book.value = await BookService.getBookById(bookId)
+        isBookLoading.value = false
+    } catch (e) {
+        error.value = `${e}`
+        isBookLoading.value = true
+    }
+}
 
-    data() {
-        return {
-            isBookLoading: true,
-            book: null as BookType | null,
-            error: "",
-        }
-    },
-
-    created() {
-        this.loadBook()
-    },
-
-    methods: {
-        async loadBook() {
-            try {
-                const book = await BookService.getBookById(this.bookId)
-                this.book = book
-                this.isBookLoading = false
-            } catch (e) {
-                this.error = `${e}`
-                this.isBookLoading = true
-            }
-        },
-    },
+onMounted(() => {
+    loadBook(props.bookId)
 })
 </script>
 

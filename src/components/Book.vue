@@ -1,30 +1,23 @@
-<script lang="ts">
-import { defineComponent, type PropType } from "vue"
-import { BookStatuses, type Book, type BookStatus } from "../types/book.d"
+<script setup lang="ts">
+import { computed, defineProps } from "vue"
+import { BookStatuses, type Book } from "../types/book.d"
 
-export default defineComponent({
-    props: {
-        book: { required: true, type: Object as PropType<Book> },
-    },
-    data() {
-        return {
-            validStatuses: BookStatuses,
-        }
-    },
-    computed: {
-        bookLink() {
-            return { name: "book", params: { bookId: `${this.book.id}` } }
-        },
-    },
-    methods: {
-        toggleFaforites() {
-            this.book.is_favorite = !this.book.is_favorite
-        },
-        changeStatus(status: BookStatus) {
-            this.book.status = status
-        },
-    },
+interface Props {
+    book: Book
+}
+const props = defineProps<Props>()
+
+const { book } = props
+
+const validStatuses = BookStatuses
+
+const bookLink = computed(() => {
+    return { name: "book", params: { bookId: `${book.id}` } }
 })
+
+const toggleFaforites = () => {
+    book.is_favorite = !book.is_favorite
+}
 </script>
 
 <template>

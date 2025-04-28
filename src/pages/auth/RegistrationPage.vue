@@ -1,49 +1,39 @@
-<script lang="ts">
-import { defineComponent } from "vue"
-import { AuthAPI } from "../../api/auth.api"
-import { handleAuthError } from "../../stores/auth.store"
+<script setup lang="ts">
+import { reactive, ref } from "vue"
+import useAuthStore, { handleAuthError } from "../../stores/auth.store"
+import { useRoute, useRouter } from "vue-router"
 
-export default defineComponent({
-    beforeRouteLeave(_to, _from, next) {
-        if (this.isLogging) {
-            if (!confirm("are you sure you want to leave?")) {
-                next(false)
-            }
-        }
-        next()
-    },
-    data() {
-        return {
-            isLogging: false,
-            creds: {
-                email: "",
-                password: "",
-            },
-            error: "",
-        }
-    },
-    methods: {
-        async register() {
-            this.isLogging = true
-
-            try {
-                await AuthAPI.register(this.creds.email, this.creds.password)
-            } catch (e) {
-                this.error = `Failed to register. ${handleAuthError(e)}`
-                return
-            } finally {
-                this.isLogging = false
-            }
-
-            const queryRedirect = this.$route.query.redirect
-            if (queryRedirect) {
-                this.$router.replace(`${queryRedirect}`)
-            } else {
-                this.$router.replace({ name: "search" })
-            }
-        },
-    },
+const isLogging = ref(false)
+const creds = reactive({
+    email: "",
+    password: "",
 })
+const error = ref("")
+
+const authStore = useAuthStore()
+
+const route = useRoute()
+const router = useRouter()
+
+async function register() {
+    isLogging.value = true
+
+    try {
+        await authStore.register(creds)
+    } catch (e) {
+        error.value = `Failed to register. ${handleAuthError(e)}`
+        return
+    } finally {
+        isLogging.value = false
+    }
+
+    const queryRedirect = route.query.redirect
+    if (queryRedirect) {
+        router.replace(`${queryRedirect}`)
+    } else {
+        router.replace({ name: "search" })
+    }
+}
 </script>
 
 <template>

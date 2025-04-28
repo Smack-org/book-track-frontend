@@ -1,17 +1,12 @@
-<script lang="ts">
-import { defineComponent, type PropType } from "vue"
+<script setup lang="ts">
 import Book from "./Book.vue"
 import type { Book as BookType } from "../types/book"
 
-export default defineComponent({
-    components: { Book },
-    props: {
-        books: { type: Object as PropType<BookType[]>, required: true },
-    },
-    data() {
-        return {}
-    },
-})
+interface Props {
+    books: BookType[]
+}
+
+defineProps<Props>()
 </script>
 
 <template>

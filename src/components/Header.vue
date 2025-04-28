@@ -1,13 +1,7 @@
-<script lang="ts">
-import { defineComponent } from "vue"
+<script setup lang="ts">
 import useAuthStore from "../stores/auth.store"
 
-export default defineComponent({
-    setup() {
-        const authStore = useAuthStore()
-        return { authStore }
-    },
-})
+const authStore = useAuthStore()
 </script>
 
 <template>

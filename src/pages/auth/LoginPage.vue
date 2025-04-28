@@ -1,54 +1,39 @@
-<script lang="ts">
-import { defineComponent } from "vue"
+<script setup lang="ts">
+import { reactive, ref } from "vue"
 import useAuthStore, { handleAuthError } from "../../stores/auth.store"
+import { useRoute, useRouter } from "vue-router"
 
-export default defineComponent({
-    beforeRouteLeave(_to, _from, next) {
-        if (this.isLogging) {
-            if (!confirm("are you sure you want to leave?")) {
-                next(false)
-            }
-        }
-        next()
-    },
-    data() {
-        return {
-            isLogging: false,
-            creds: {
-                email: "",
-                password: "",
-            },
-            error: "",
-        }
-    },
-    computed: {
-        authStore() {
-            return useAuthStore()
-        },
-    },
-    methods: {
-        async login() {
-            this.isLogging = true
-
-            try {
-                await this.authStore.login(this.creds)
-            } catch (e) {
-                this.error = `Failed to log in. ${handleAuthError(e)}`
-                return
-            } finally {
-                this.isLogging = false
-            }
-
-            const queryRedirect = this.$route.query.redirect
-
-            if (queryRedirect) {
-                this.$router.replace(`${queryRedirect}`)
-            } else {
-                this.$router.replace({ name: "search" })
-            }
-        },
-    },
+const isLogging = ref(false)
+const creds = reactive({
+    email: "",
+    password: "",
 })
+const error = ref("")
+
+const authStore = useAuthStore()
+
+const route = useRoute()
+const router = useRouter()
+
+async function login() {
+    isLogging.value = true
+
+    try {
+        await authStore.login(creds)
+    } catch (e) {
+        error.value = `Failed to log in. ${handleAuthError(e)}`
+        return
+    } finally {
+        isLogging.value = false
+    }
+
+    const queryRedirect = route.query.redirect
+    if (queryRedirect) {
+        router.replace(`${queryRedirect}`)
+    } else {
+        router.replace({ name: "search" })
+    }
+}
 </script>
 
 <template>

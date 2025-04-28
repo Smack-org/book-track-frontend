@@ -1,16 +1,5 @@
-<script lang="ts">
-import { defineComponent } from "vue"
-import useAuthStore from "./stores/auth.store"
+<script setup lang="ts">
 import Header from "./components/Header.vue"
-
-export default defineComponent({
-    components: { Header },
-    setup() {
-        const userStore = useAuthStore()
-
-        return { userStore }
-    },
-})
 </script>
 
 <template>
