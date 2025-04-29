@@ -1,29 +1,29 @@
-export type BookStatus = "want" | "reading" | "read" | ""
-
-export type BookType = {
+export type BookDTO = {
     id: number
     title: string
-    authors: AuthorType[]
+    authors: BookDTOAuthor[]
     summaries: string[]
-    translators: AuthorType[]
+    translators: BookDTOAuthor[]
     subjects: string[]
     bookshelves: string[]
-    languages: Language[]
+    languages: BookDTOLanguage[]
     copyright: boolean
-    media_type: MediaType
-    formats: Formats
+    media_type: BookDTOMediaType
+    formats: BookDTOFromats
     download_count: number
     is_favorite: boolean
-    status: BookStatus
+    status: BookDTOStatus
 }
 
-export type AuthorType = {
+export type BookDTOStatus = "want" | "reading" | "read" | ""
+
+export type BookDTOAuthor = {
     name: string
     birth_year?: number
     death_year?: number
 }
 
-export type Formats = {
+export type BookDTOFromats = {
     "text/html": string
     "application/epub+zip": string
     "application/x-mobipocket-ebook": string
@@ -37,10 +37,10 @@ export type Formats = {
     "text/html; charset=iso-8859-1"?: string
 }
 
-export enum Language {
+export enum BookDTOLanguage {
     En = "en",
 }
 
-export enum MediaType {
+export enum BookDTOMediaType {
     Text = "Text",
 }

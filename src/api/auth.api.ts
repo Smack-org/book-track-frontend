@@ -2,9 +2,9 @@ import axios from "axios"
 import { addAuthInterceptor } from "./axios"
 
 const API_KEY = import.meta.env.VITE_FIREBASE_API_KEY
-const AUTH_API_URL = `https://identitytoolkit.googleapis.com/v1/accounts/`
+const AUTH_SERVICE_URL = import.meta.env.VITE_AUTH_SERVICE_URL
 
-const api = axios.create({ baseURL: AUTH_API_URL })
+const api = axios.create({ baseURL: AUTH_SERVICE_URL })
 addAuthInterceptor(api)
 
 export class AuthenticationError extends Error {
@@ -49,7 +49,7 @@ export const AuthAPI = {
         }
 
         try {
-            const { data } = await api.post<LoginResponse>(`${AUTH_API_URL}:signInWithPassword?key=${API_KEY}`, payload)
+            const { data } = await api.post<LoginResponse>(`${AUTH_SERVICE_URL}:signInWithPassword?key=${API_KEY}`, payload)
 
             return data
         } catch (e) {
@@ -65,7 +65,7 @@ export const AuthAPI = {
         }
 
         try {
-            const { data } = await api.post<RegisterResponse>(`${AUTH_API_URL}:signUp?key=${API_KEY}`, payload)
+            const { data } = await api.post<RegisterResponse>(`${AUTH_SERVICE_URL}:signUp?key=${API_KEY}`, payload)
             return data
         } catch (e) {
             throw handleAxiosError(e)
@@ -77,7 +77,7 @@ export const AuthAPI = {
             const payload = {
                 idToken,
             }
-            const response = await api.post<GetUserResponse>(`${AUTH_API_URL}:lookup?key=${API_KEY}`, payload)
+            const response = await api.post<GetUserResponse>(`${AUTH_SERVICE_URL}:lookup?key=${API_KEY}`, payload)
 
             if (!response.data?.users?.length) {
                 throw new Error("No user data found")

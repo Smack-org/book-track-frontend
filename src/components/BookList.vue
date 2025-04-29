@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import Book from "./Book.vue"
-import type { Book as BookType } from "../types/book"
+import type { BookType } from "../types/book"
 
 interface Props {
     books: BookType[]

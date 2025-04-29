@@ -1,4 +1,4 @@
-import { type AxiosInstance } from "axios"
+import axios, { type AxiosInstance } from "axios"
 import useAuthStore from "../stores/auth.store"
 
 export const addAuthInterceptor = (axiosInstance: AxiosInstance) => {
@@ -21,4 +21,17 @@ export const addAuthInterceptor = (axiosInstance: AxiosInstance) => {
     )
 
     return axiosInstance
+}
+
+export function handleApiError(error: unknown): Error {
+    if (axios.isAxiosError(error)) {
+        console.error("API Error:", {
+            message: error.message,
+            status: error.response?.status,
+            data: error.response?.data,
+        })
+        return new Error(error.response?.data?.message || "An error occurred while fetching books")
+    }
+    console.error("Unexpected error:", error)
+    return new Error("An unexpected error occurred")
 }

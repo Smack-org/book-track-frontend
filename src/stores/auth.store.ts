@@ -34,6 +34,7 @@ const useAuthStore = defineStore("userStore", {
                 this.user = { email, uid: localId }
             } catch (e) {
                 this.error = handleAuthError(e) || "login failed"
+                console.error(e)
                 throw e
             } finally {
                 this.loading = false

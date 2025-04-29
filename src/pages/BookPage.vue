@@ -2,7 +2,7 @@
 import { onMounted, ref } from "vue"
 import Book from "../components/Book.vue"
 import { BookService } from "../api/book.service"
-import type { Book as BookType } from "../types/book"
+import type { BookType } from "../types/book"
 
 const isBookLoading = ref(true)
 const book = ref<BookType | null>(null)

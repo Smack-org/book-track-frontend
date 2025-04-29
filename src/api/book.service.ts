@@ -1,12 +1,13 @@
 import axios from "axios"
-import type { Book } from "../types/book"
-import type { BookType } from "./book"
+import type { BookType } from "../types/book"
+import type { BookDTO } from "../types/bookDTO"
+import { handleApiError } from "./axios"
 
-const BASE_URL = "https://gutendex.com/books"
+const BOOK_SERVICE_URL = import.meta.env.VITE_BOOK_SERVICE_URL
 const DEFAULT_TIMEOUT = 10000
 
 const apiClient = axios.create({
-    baseURL: BASE_URL,
+    baseURL: BOOK_SERVICE_URL,
     timeout: DEFAULT_TIMEOUT,
     headers: {
         "Content-Type": "application/json",
@@ -18,7 +19,7 @@ type ApiResponse = {
     count: number
     next: string
     previous: null
-    results: BookType[]
+    results: BookDTO[]
 }
 
 type SearchParams = {
@@ -28,62 +29,45 @@ type SearchParams = {
 }
 
 export const BookService = {
-    async getBooks(): Promise<Book[]> {
+    async getBooks(): Promise<BookType[]> {
         try {
             const response = await apiClient.get<ApiResponse>("/")
             return response.data.results
         } catch (error) {
-            handleApiError(error)
-            throw error
+            throw handleApiError(error)
         }
     },
 
-    async getBookById(id: number): Promise<Book> {
+    async getBookById(id: number): Promise<BookType> {
         try {
             const response = await apiClient.get<ApiResponse>(`/`, {
                 params: { ids: id },
             })
             return response.data.results[0]
         } catch (error) {
-            handleApiError(error)
-            throw error
+            throw handleApiError(error)
         }
     },
 
-    async getBooksByIds(ids: number[]): Promise<Book[]> {
+    async getBooksByIds(ids: number[]): Promise<BookType[]> {
         try {
             const response = await apiClient.get<ApiResponse>(`/`, {
                 params: { ids },
             })
             return response.data.results
         } catch (error) {
-            handleApiError(error)
-            throw error
+            throw handleApiError(error)
         }
     },
 
-    async searchBooks({ query, sort, topic }: SearchParams): Promise<BookType[]> {
+    async searchBooks({ query, sort, topic }: SearchParams): Promise<BookDTO[]> {
         try {
             const response = await apiClient.get<ApiResponse>("/", {
                 params: { search: query, sort: sort, topic: topic },
             })
             return response.data.results
         } catch (error) {
-            handleApiError(error)
-            throw error
+            throw handleApiError(error)
         }
     },
-}
-
-function handleApiError(error: unknown): void {
-    if (axios.isAxiosError(error)) {
-        console.error("API Error:", {
-            message: error.message,
-            status: error.response?.status,
-            data: error.response?.data,
-        })
-        throw new Error(error.response?.data?.message || "An error occurred while fetching books")
-    }
-    console.error("Unexpected error:", error)
-    throw new Error("An unexpected error occurred")
 }

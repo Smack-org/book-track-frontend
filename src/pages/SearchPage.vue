@@ -2,7 +2,7 @@
 import BookList from "../components/BookList.vue"
 import { BookService } from "../api/book.service"
 import { debounce } from "lodash-es"
-import type { Book } from "../types/book"
+import type { BookType } from "../types/book"
 import { useRoute, useRouter, type LocationQuery } from "vue-router"
 import { ref } from "vue"
 
@@ -25,7 +25,7 @@ const getSearchQuery = (query: LocationQuery): SearchProps => {
 
 const searchProps: SearchProps = getSearchQuery(route.query)
 
-const books = ref<Book[]>([])
+const books = ref<BookType[]>([])
 const isLoading = ref(false)
 const error = ref("")
 

@@ -1,18 +1,18 @@
 export const BookStatuses = ["want", "reading", "read", ""] as const
 export type BookStatus = (typeof BookStatuses)[number]
 
-export type AuthorType = {
+export type BookAuthor = {
     name: string
     birth_year?: number
     death_year?: number
 }
 
-export type Book = {
+export type BookType = {
     id: number
     title: string
-    authors: AuthorType[]
+    authors: BookAuthor[]
     summaries: string[]
-    translators: AuthorType[]
+    translators: BookAuthor[]
     subjects: string[]
     bookshelves: string[]
     copyright: boolean
