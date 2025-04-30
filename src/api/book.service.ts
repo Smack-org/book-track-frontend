@@ -31,7 +31,7 @@ type SearchParams = {
 export const BookService = {
     async getBooks(): Promise<BookType[]> {
         try {
-            const response = await apiClient.get<ApiResponse>("/")
+            const response = await apiClient.get<ApiResponse>("/books")
             return response.data.results
         } catch (error) {
             throw handleApiError(error)
@@ -40,7 +40,7 @@ export const BookService = {
 
     async getBookById(id: number): Promise<BookType> {
         try {
-            const response = await apiClient.get<ApiResponse>(`/`, {
+            const response = await apiClient.get<ApiResponse>(`/books`, {
                 params: { ids: id },
             })
             return response.data.results[0]
@@ -51,7 +51,7 @@ export const BookService = {
 
     async getBooksByIds(ids: number[]): Promise<BookType[]> {
         try {
-            const response = await apiClient.get<ApiResponse>(`/`, {
+            const response = await apiClient.get<ApiResponse>(`/books`, {
                 params: { ids },
             })
             return response.data.results
@@ -60,9 +60,9 @@ export const BookService = {
         }
     },
 
-    async searchBooks({ query, sort, topic }: SearchParams): Promise<BookDTO[]> {
+    async searchBooks({ query, sort, topic }: SearchParams): Promise<BookType[]> {
         try {
-            const response = await apiClient.get<ApiResponse>("/", {
+            const response = await apiClient.get<ApiResponse>("/books", {
                 params: { search: query, sort: sort, topic: topic },
             })
             return response.data.results

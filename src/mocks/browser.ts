@@ -1,4 +1,7 @@
 import { setupWorker } from "msw/browser"
-import userHandlers from "./handlers/user"
+import { handlers } from "./handlers"
+import type { BookDTO } from "../types/bookDTO"
 
-export const worker = setupWorker(...userHandlers)
+export const worker = (mockBooks: BookDTO[]) => {
+    return setupWorker(...handlers(mockBooks))
+}
