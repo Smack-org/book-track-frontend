@@ -15,7 +15,14 @@ export type BookDTO = {
     status: BookDTOStatus
 }
 
-export type BookDTOStatus = "want" | "reading" | "read" | ""
+export const BookDTOStatusMap = {
+    want: "want_to_read",
+    reading: "reading",
+    read: "done",
+    none: "",
+} as const
+
+type BookDTOStatus = (typeof BookDTOStatusMap)[keyof typeof BookDTOStatusMap]
 
 export type BookDTOAuthor = {
     name: string

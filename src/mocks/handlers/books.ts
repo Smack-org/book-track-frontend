@@ -6,8 +6,6 @@ interface UpdateStatusRequest {
 }
 const SERVICE_URL = import.meta.env.VITE_BOOK_SERVICE_URL
 
-console.log(SERVICE_URL)
-
 export default function (mockBooks: BookDTO[]) {
     return [
         http.get(SERVICE_URL + "/books", ({ request }) => {

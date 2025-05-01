@@ -6,7 +6,7 @@ import type {
     GetFavoriteBooksResponse,
     RemoveFavoriteBookParameters as RemoveFavoriteBookParameters,
     RemoveFavoriteBookResponse,
-} from "./user.service.types"
+} from "./types/favorites"
 
 const USER_SERVICE_URL = import.meta.env.VITE_USER_SERVICE_URL
 const DEFAULT_TIMEOUT = 5000
@@ -47,10 +47,4 @@ export const FavoritesService = {
             throw handleApiError(e)
         }
     },
-
-    // async getBooksWithStatuses(): Promise<BooksWithStatusesResponse> {
-    //     return Promise.resolve([])
-    // },
-    //
-    // async setBookStatus() {},
 }

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, defineProps, reactive } from "vue"
+import { computed, defineProps, reactive, watch } from "vue"
 import { BookStatuses, type BookType } from "../types/book.d"
 import useFavoritesStore from "../stores/favorites.store"
 
@@ -23,6 +23,15 @@ const toggleFavorite = () => {
     book.is_favorite = !book.is_favorite
     favStore.toggleBook(book)
 }
+
+// const statusStore = useBooksWithStatusesStore()
+
+watch(
+    () => book.status,
+    () => {
+        // TODO: update store
+    }
+)
 </script>
 
 <template>

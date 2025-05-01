@@ -1,6 +1,6 @@
 import { defineStore } from "pinia"
 import type { User } from "../types/user"
-import { AuthAPI, AuthenticationError } from "../api/auth.api"
+import { AuthAPI, AuthenticationError } from "../api/auth/auth.api"
 import { TokenService } from "./tokens.localstore"
 
 type AuthCreds = {
@@ -28,10 +28,12 @@ const useAuthStore = defineStore("userStore", {
             this.loading = true
             this.error = null
             try {
-                const { idToken, localId } = await AuthAPI.login(email, password)
+                const { token, userId } = await AuthAPI.login(email, password)
 
-                this.setTokens(idToken)
-                this.user = { email, uid: localId }
+                console.log(token, userId)
+
+                this.setTokens(token)
+                this.user = { email, uid: userId }
             } catch (e) {
                 this.error = handleAuthError(e) || "login failed"
                 console.error(e)
@@ -44,9 +46,9 @@ const useAuthStore = defineStore("userStore", {
         async register({ email, password }: AuthCreds) {
             this.loading = true
             try {
-                const { idToken, localId } = await AuthAPI.register(email, password)
-                this.setTokens(idToken)
-                this.user = { email, uid: localId }
+                const { token, userId } = await AuthAPI.register(email, password)
+                this.setTokens(token)
+                this.user = { email, uid: userId }
             } catch (e: unknown) {
                 this.error = handleAuthError(e) || "registration failed"
                 throw e
@@ -65,8 +67,8 @@ const useAuthStore = defineStore("userStore", {
             if (!this.token) return
 
             try {
-                const userData = await AuthAPI.getUser(this.token)
-                this.user = { email: userData.email, uid: userData.localId }
+                const userData = await AuthAPI.getUser()
+                this.user = { email: userData.email, uid: userData.userId }
             } catch (e) {
                 this.logout()
                 throw e

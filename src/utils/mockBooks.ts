@@ -1,7 +1,8 @@
 import type { BookType } from "../types/book.d"
-import { BookDTOMediaType, type BookDTO, type BookDTOAuthor, type BookDTOStatus, BookDTOLanguage, type BookDTOFromats } from "../types/bookDTO.d"
+import { BookDTOMediaType, type BookDTO, type BookDTOAuthor, BookDTOLanguage, type BookDTOFromats, type BookDTOStatus } from "../types/bookDTO.d"
+import { mapBookStatus } from "../types/bookDTOAdapter"
 
-const STATUSES: BookDTOStatus[] = ["want", "reading", "read", ""]
+const STATUSES: BookDTOStatus[] = ["want_to_read", "reading", "reading", ""]
 const SUBJECTS = ["Fiction", "Science Fiction", "Fantasy", "Romance", "Mystery", "History", "Science", "Philosophy"]
 const BOOKSHELVES = ["Featured", "Popular", "Classics", "Staff Picks", "New Releases", "Award Winners"]
 
@@ -80,5 +81,6 @@ export function convertBookToDTO(book: BookType): BookDTO {
         media_type: BookDTOMediaType.Text,
         formats: BASE_FORMATS,
         download_count: Math.floor(Math.random() * 10000),
+        status: mapBookStatus(book.status),
     }
 }

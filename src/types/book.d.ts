@@ -1,5 +1,12 @@
-export const BookStatuses = ["want", "reading", "read", ""] as const
-export type BookStatus = (typeof BookStatuses)[number]
+export const BookStatusMap = {
+    want: "want",
+    reading: "reading",
+    read: "done",
+    none: "",
+} as const
+
+type BookStatus = (typeof BookStatusMap)[keyof typeof BookStatusMap]
+export const BookStatuses = Object.values(BookStatusMap)
 
 export type BookAuthor = {
     name: string

@@ -2,6 +2,7 @@ import axios from "axios"
 import type { BookType } from "../types/book"
 import type { BookDTO } from "../types/bookDTO"
 import { handleApiError } from "./axios"
+import { adaptBookFromDTO } from "../types/bookDTOAdapter"
 
 const BOOK_SERVICE_URL = import.meta.env.VITE_BOOK_SERVICE_URL
 const DEFAULT_TIMEOUT = 10000
@@ -32,7 +33,7 @@ export const BookService = {
     async getBooks(): Promise<BookType[]> {
         try {
             const response = await apiClient.get<ApiResponse>("/books")
-            return response.data.results
+            return response.data.results.map((b) => adaptBookFromDTO(b))
         } catch (error) {
             throw handleApiError(error)
         }
@@ -43,7 +44,12 @@ export const BookService = {
             const response = await apiClient.get<ApiResponse>(`/books`, {
                 params: { ids: id },
             })
-            return response.data.results[0]
+
+            if (response.data.results.length === 0) {
+                throw new Error("book not found")
+            }
+
+            return adaptBookFromDTO(response.data.results[0])
         } catch (error) {
             throw handleApiError(error)
         }
@@ -54,7 +60,7 @@ export const BookService = {
             const response = await apiClient.get<ApiResponse>(`/books`, {
                 params: { ids },
             })
-            return response.data.results
+            return response.data.results.map((b) => adaptBookFromDTO(b))
         } catch (error) {
             throw handleApiError(error)
         }
@@ -65,7 +71,7 @@ export const BookService = {
             const response = await apiClient.get<ApiResponse>("/books", {
                 params: { search: query, sort: sort, topic: topic },
             })
-            return response.data.results
+            return response.data.results.map((b) => adaptBookFromDTO(b))
         } catch (error) {
             throw handleApiError(error)
         }

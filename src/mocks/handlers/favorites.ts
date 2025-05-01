@@ -8,7 +8,7 @@ import type {
     GetFavoriteBooksResponse,
     RemoveFavoriteBookParameters,
     RemoveFavoriteBookResponse,
-} from "../../api/user/user.service.types"
+} from "../../api/user/types/favorites.d.ts"
 
 const USER_SERVICE_URL = import.meta.env.VITE_USER_SERVICE_URL
 
