@@ -8,7 +8,7 @@ const authStore = useAuthStore()
     <header>
         <div v-if="authStore.isAuthentificated">
             <div>
-                hello, {{ authStore.user?.email }}
+                hello, {{ authStore.user?.login }}
                 <router-link :to="{ name: 'login', replace: true }" @click="authStore.logout"> logout </router-link>
             </div>
         </div>

@@ -5,7 +5,7 @@ import { useRoute, useRouter } from "vue-router"
 
 const isLogging = ref(false)
 const creds = reactive({
-    email: "",
+    login: "",
     password: "",
 })
 const error = ref("")
@@ -39,8 +39,8 @@ async function login() {
 <template>
     <form @submit.prevent="login">
         <div>
-            <label for="email">email: </label>
-            <input id="login" v-model="creds.email" type="text" required />
+            <label for="login">login: </label>
+            <input id="login" v-model="creds.login" type="text" required />
         </div>
 
         <div>

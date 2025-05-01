@@ -4,7 +4,7 @@ import { AuthAPI, AuthenticationError } from "../api/auth/auth.api"
 import { TokenService } from "./tokens.localstore"
 
 type AuthCreds = {
-    email: string
+    login: string
     password: string
 }
 
@@ -24,16 +24,14 @@ const useAuthStore = defineStore("userStore", {
     },
 
     actions: {
-        async login({ email, password }: AuthCreds) {
+        async login({ login: user_login, password }: AuthCreds) {
             this.loading = true
             this.error = null
             try {
-                const { token, userId } = await AuthAPI.login(email, password)
-
-                console.log(token, userId)
+                const { token, userId } = await AuthAPI.login(user_login, password)
 
                 this.setTokens(token)
-                this.user = { email, uid: userId }
+                this.user = { login: user_login, uid: userId }
             } catch (e) {
                 this.error = handleAuthError(e) || "login failed"
                 console.error(e)
@@ -43,12 +41,12 @@ const useAuthStore = defineStore("userStore", {
             }
         },
 
-        async register({ email, password }: AuthCreds) {
+        async register({ login, password }: AuthCreds) {
             this.loading = true
             try {
-                const { token, userId } = await AuthAPI.register(email, password)
+                const { token, userId } = await AuthAPI.register(login, password)
                 this.setTokens(token)
-                this.user = { email, uid: userId }
+                this.user = { login: login, uid: userId }
             } catch (e: unknown) {
                 this.error = handleAuthError(e) || "registration failed"
                 throw e
@@ -68,7 +66,7 @@ const useAuthStore = defineStore("userStore", {
 
             try {
                 const userData = await AuthAPI.getUser()
-                this.user = { email: userData.email, uid: userData.userId }
+                this.user = { login: userData.login, uid: userData.uid }
             } catch (e) {
                 this.logout()
                 throw e

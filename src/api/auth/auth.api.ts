@@ -1,6 +1,7 @@
 import axios, { type AxiosResponse } from "axios"
 import { addAuthInterceptor } from "../axios"
 import type { GetUserResponse, LoginRequest, LoginResponse, RegisterRequest, RegisterResponse } from "./types/auth"
+import type { User } from "../../types/user"
 
 const AUTH_SERVICE_URL = import.meta.env.VITE_AUTH_SERVICE_URL
 
@@ -36,11 +37,14 @@ export const AuthAPI = {
         }
     },
 
-    async getUser(): Promise<GetUserResponse> {
+    async getUser(): Promise<User> {
         try {
             const { data } = await api.get<GetUserResponse>(`${AUTH_SERVICE_URL}/me`)
 
-            return data
+            return {
+                login: data.login,
+                uid: data.userId,
+            }
         } catch (error) {
             throw handleAxiosError(error)
         }

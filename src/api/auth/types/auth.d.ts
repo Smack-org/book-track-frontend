@@ -22,5 +22,5 @@ export interface RegisterResponse {
 
 export interface GetUserResponse {
     userId: string
-    email: string
+    login: string
 }

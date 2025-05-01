@@ -26,7 +26,7 @@ export default function () {
         http.get<GetUserResponse>(AUTH_URL + "/me", () => {
             const resonse: GetUserResponse = {
                 userId: "1",
-                email: "some@mai.ru",
+                login: "some_login",
             }
 
             return HttpResponse.json(resonse)
