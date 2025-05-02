@@ -45,8 +45,11 @@ const updateBooks = () => {
         try {
             books.value = await BookService.searchBooks(searchParams)
         } catch (e) {
-            console.log(`[LOG] (SearchBooks.vue:82): ${e}`)
-            error.value = `${e}`
+            if (e instanceof Error) {
+                error.value = `${e.message}`
+            } else {
+                error.value = `failed to get books ${e}`
+            }
         } finally {
             isLoading.value = false
         }

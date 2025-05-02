@@ -32,8 +32,7 @@ export const BooksWithStatusesService = {
             const { data } = await api.get<GetReadingListsResponse>(USER_SERVICE_URL + "/reading-list", { params })
 
             if (!Array.isArray(data)) {
-                console.log(data)
-                throw new Error("Invalid response format")
+                throw new Error(`get books with status: Invalid response format ${data}`)
             }
 
             return data.map((v) => adaptBookFromDTO(v.book))

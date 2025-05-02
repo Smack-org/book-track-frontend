@@ -26,7 +26,6 @@ const useBooksWithStatusesStore = defineStore("books-with-statuses", {
             this.error = null
             try {
                 const response = await BooksWithStatusesService.get()
-                console.log(response)
                 this.books = response
             } catch (error) {
                 this.error = error instanceof Error ? error.message : "Failed to fetch from reading list"

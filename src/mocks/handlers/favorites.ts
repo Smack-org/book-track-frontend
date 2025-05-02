@@ -44,7 +44,6 @@ export default function (allBooks: BookDTO[]) {
             withDelay(250, async ({ request }) => {
                 const url = new URL(request.url)
                 const bookId = parseInt(url.searchParams.get("bookId")!)
-                console.log(bookId)
 
                 const removedBook = allBooks.find((book) => book.id === bookId)!
                 removedBook.is_favorite = false

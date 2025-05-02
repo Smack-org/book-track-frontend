@@ -16,7 +16,11 @@ async function loadBook(bookId: number) {
         book.value = await BookService.getBookById(bookId)
         isBookLoading.value = false
     } catch (e) {
-        error.value = `${e}`
+        if (e instanceof Error) {
+            error.value = e.message
+        } else {
+            error.value = `${e}`
+        }
         isBookLoading.value = true
     }
 }
