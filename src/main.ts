@@ -7,11 +7,11 @@ import { createPinia } from "pinia"
 import { generateMockBookDTOs } from "./utils/mockBooks"
 
 if (import.meta.env.VITE_ENABLE_MSW_WORKER === "on") {
-    const { worker } = await import("./mocks/browser")
+    import("./mocks/browser").then(({ worker }) => {
+        const books = generateMockBookDTOs(20)
 
-    const books = generateMockBookDTOs(20)
-
-    await worker(books).start()
+        worker(books).start()
+    })
 }
 
 createApp(App).use(createPinia()).use(router).mount("#app")
