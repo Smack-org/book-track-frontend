@@ -6,7 +6,7 @@ import router from "./router"
 import { createPinia } from "pinia"
 import { generateMockBookDTOs } from "./utils/mockBooks"
 
-if (import.meta.env.DEV && import.meta.env.VITE_ENABLE_MSW_WORKER === "on") {
+if (import.meta.env.VITE_ENABLE_MSW_WORKER === "on") {
     const { worker } = await import("./mocks/browser")
 
     const books = generateMockBookDTOs(20)
