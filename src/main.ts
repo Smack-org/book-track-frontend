@@ -6,12 +6,31 @@ import router from "./router"
 import { createPinia } from "pinia"
 import { generateMockBookDTOs } from "./utils/mockBooks"
 
-if (import.meta.env.VITE_ENABLE_MSW_WORKER === "on") {
-    import("./mocks/browser").then(({ worker }) => {
-        const books = generateMockBookDTOs(20)
+const initApp = () => {
+    const app = createApp(App)
+    app.use(createPinia())
+    app.use(router)
 
-        worker(books).start()
-    })
+    if (import.meta.env.VITE_ENABLE_MSW_WORKER === "on") {
+        import("./mocks/browser")
+            .then(({ worker }) => {
+                const books = generateMockBookDTOs(20)
+                return worker(books)
+                    .start({ quiet: true })
+                    .then(() => {
+                        return app
+                    })
+            })
+            .catch((error) => {
+                console.error("MSW initialization failed:", error)
+                return app
+            })
+            .then((app) => {
+                app.mount("#app")
+            })
+    } else {
+        app.mount("#app")
+    }
 }
 
-createApp(App).use(createPinia()).use(router).mount("#app")
+initApp()
