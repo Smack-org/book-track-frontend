@@ -1,9 +1,6 @@
 import { http, HttpResponse } from "msw"
-import type { BookDTO, BookDTOStatus } from "../../types/bookDTO"
+import type { BookDTO } from "../../types/bookDTO"
 
-interface UpdateStatusRequest {
-    status: BookDTOStatus
-}
 const SERVICE_URL = import.meta.env.VITE_BOOK_SERVICE_URL
 
 export default function (mockBooks: BookDTO[]) {
@@ -70,31 +67,6 @@ export default function (mockBooks: BookDTO[]) {
                 previous: null,
                 results,
             })
-        }),
-
-        http.patch<{ id: string }, UpdateStatusRequest>(SERVICE_URL + "/books/:id/status", async ({ request, params }) => {
-            const { status } = await request.json()
-            const bookIndex = mockBooks.findIndex((b) => b.id === Number(params.id))
-
-            if (bookIndex === -1) {
-                return new HttpResponse(null, { status: 404 })
-            }
-
-            mockBooks[bookIndex].status = status
-
-            return HttpResponse.json(mockBooks[bookIndex])
-        }),
-
-        http.patch(SERVICE_URL + "/books/:id/favorite", async ({ params }) => {
-            const bookIndex = mockBooks.findIndex((b) => b.id === Number(params.id))
-
-            if (bookIndex === -1) {
-                return new HttpResponse(null, { status: 404 })
-            }
-
-            mockBooks[bookIndex].is_favorite = !mockBooks[bookIndex].is_favorite
-
-            return HttpResponse.json(mockBooks[bookIndex])
         }),
     ]
 }
