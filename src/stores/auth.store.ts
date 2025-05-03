@@ -65,8 +65,8 @@ const useAuthStore = defineStore("userStore", {
             if (!this.token) return
 
             try {
-                const { username, login, uid } = await AuthAPI.getUser()
-                this.user = { username, login, uid }
+                const { username, login, uid, created_at } = await AuthAPI.getUser()
+                this.user = { username, login, uid, created_at }
             } catch (e) {
                 this.logout()
                 throw e

@@ -55,6 +55,7 @@ export const AuthAPI = {
                 login: data.login,
                 uid: data.id,
                 username: data.username,
+                created_at: data.created_at,
             }
         } catch (error) {
             throw handleAxiosError(error)
