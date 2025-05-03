@@ -7,26 +7,26 @@ export default function () {
     return [
         http.post<RegisterRequest, RegisterResponse>(AUTH_URL + "/auth/register", () => {
             const resonse: RegisterResponse = {
-                token: "123",
-                userId: "1",
-                expiresIn: "22",
+                access_token: "123",
+                token_type: "bearer",
             }
 
             return HttpResponse.json(resonse)
         }),
         http.post<LoginRequest, LoginResponse>(AUTH_URL + "/auth/login", () => {
             const resonse: LoginResponse = {
-                token: "123",
-                userId: "1",
-                expiresIn: "22",
+                access_token: "123",
+                token_type: "bearer",
             }
 
             return HttpResponse.json(resonse)
         }),
         http.get<GetUserResponse>(AUTH_URL + "/me", () => {
             const resonse: GetUserResponse = {
-                userId: "1",
                 login: "some_login",
+                id: "123",
+                username: "some_username",
+                created_at: new Date().toISOString(),
             }
 
             return HttpResponse.json(resonse)
