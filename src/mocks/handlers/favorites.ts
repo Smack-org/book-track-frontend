@@ -17,7 +17,7 @@ export default function (allBooks: BookDTO[]) {
 
     return [
         http.get<GetFavoriteBooksParameters, object, GetFavoriteBooksResponse>(
-            USER_SERVICE_URL + "/favorites",
+            USER_SERVICE_URL + "/favourites",
 
             withDelay(250, () => {
                 const resonse = getFavoriteBooks().map((book) => ({ book, added_at: new Date().toISOString() }))
@@ -26,7 +26,7 @@ export default function (allBooks: BookDTO[]) {
             })
         ),
         http.post<object, AddFavoriteBookRequest, AddFavoriteBookResponse>(
-            USER_SERVICE_URL + "/favorites",
+            USER_SERVICE_URL + "/favourites",
 
             withDelay(250, async ({ request }) => {
                 const { book_id: bookId } = await request.json()
@@ -39,7 +39,7 @@ export default function (allBooks: BookDTO[]) {
             })
         ),
         http.delete<RemoveFavoriteBookParameters, object, RemoveFavoriteBookResponse>(
-            USER_SERVICE_URL + "/favorites",
+            USER_SERVICE_URL + "/favourites",
 
             withDelay(250, async ({ params }) => {
                 const book_id = parseInt(params.book_id)
