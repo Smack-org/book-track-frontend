@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue"
 import useAuthStore from "../stores/auth.store"
-import { type BookType } from "../types/book"
+import { type BookType } from "../types/book.d"
 import { FavoritesService } from "../api/user/favorites.service"
 import { BooksWithStatusesService } from "../api/user/booksWithStatus.service"
 import BookList from "../components/BookList.vue"
