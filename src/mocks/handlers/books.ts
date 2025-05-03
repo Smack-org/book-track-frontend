@@ -5,25 +5,6 @@ const SERVICE_URL = import.meta.env.VITE_BOOK_SERVICE_URL
 
 export default function (mockBooks: BookDTO[]) {
     return [
-        http.get(SERVICE_URL + "/books", ({ request }) => {
-            const url = new URL(request.url)
-            const ids = url.searchParams.get("ids")
-
-            let results = mockBooks
-
-            if (ids) {
-                const idArray = ids.split(",").map(Number)
-                results = mockBooks.filter((book) => idArray.includes(book.id))
-            }
-
-            return HttpResponse.json({
-                count: results.length,
-                next: null,
-                previous: null,
-                results,
-            })
-        }),
-
         http.get(SERVICE_URL + "/books/:id", ({ params }) => {
             const book = mockBooks.find((b) => b.id === Number(params.id))
 
@@ -39,8 +20,9 @@ export default function (mockBooks: BookDTO[]) {
             })
         }),
 
-        http.get(SERVICE_URL + "/books/search", ({ request }) => {
+        http.get(SERVICE_URL + "/books", ({ request }) => {
             const url = new URL(request.url)
+
             const query = url.searchParams.get("search")
             const sort = url.searchParams.get("sort")
             const topic = url.searchParams.get("topic")
@@ -52,13 +34,13 @@ export default function (mockBooks: BookDTO[]) {
             }
 
             if (topic) {
-                results = results.filter((book) => book.subjects.includes(topic) || book.bookshelves.includes(topic))
+                results = results.filter((book) => book.subjects.find((t) => t.toLowerCase().includes(topic)) !== undefined)
             }
 
             if (sort === "ascending") {
-                results.sort((a, b) => a.title.localeCompare(b.title))
+                results.sort((a, b) => a.title.toLowerCase().localeCompare(b.title.toLowerCase()))
             } else if (sort === "descending") {
-                results.sort((a, b) => b.title.localeCompare(a.title))
+                results.sort((a, b) => b.title.toLocaleUpperCase().localeCompare(a.title.toLowerCase()))
             }
 
             return HttpResponse.json({
