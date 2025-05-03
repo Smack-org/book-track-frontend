@@ -29,7 +29,7 @@ export default function (allBooks: BookDTO[]) {
             USER_SERVICE_URL + "/favorites",
 
             withDelay(250, async ({ request }) => {
-                const { bookId } = await request.json()
+                const { book_id: bookId } = await request.json()
 
                 const addedBook = allBooks.find((book) => book.id === bookId)!
                 addedBook.is_favorite = true

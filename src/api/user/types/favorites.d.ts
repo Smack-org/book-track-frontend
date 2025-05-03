@@ -1,16 +1,12 @@
 import type { BookDTO } from "../../types/bookDTO"
 
 export type AddFavoriteBookRequest = {
-    bookId: number
+    book_id: number
 }
 
 export type AddFavoriteBookResponse = {
     book: BookDTO
     added_at: string
-}
-
-export type RemoveFavoriteBookParameters = {
-    bookId: string
 }
 
 export type RemoveFavoriteBookResponse = {

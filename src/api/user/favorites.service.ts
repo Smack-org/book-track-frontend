@@ -1,12 +1,6 @@
 import axios from "axios"
 import { addAuthInterceptor, handleApiError } from "../axios"
-import type {
-    AddFavoriteBookRequest,
-    AddFavoriteBookResponse,
-    GetFavoriteBooksResponse,
-    RemoveFavoriteBookParameters as RemoveFavoriteBookParameters,
-    RemoveFavoriteBookResponse,
-} from "./types/favorites"
+import type { AddFavoriteBookRequest, AddFavoriteBookResponse, GetFavoriteBooksResponse, RemoveFavoriteBookResponse } from "./types/favorites"
 
 const USER_SERVICE_URL = import.meta.env.VITE_USER_SERVICE_URL
 const DEFAULT_TIMEOUT = 5000
@@ -17,7 +11,7 @@ addAuthInterceptor(api)
 export const FavoritesService = {
     async getFavoriteBooks(): Promise<GetFavoriteBooksResponse> {
         try {
-            const { data } = await api.get<GetFavoriteBooksResponse>(USER_SERVICE_URL + "/favorites")
+            const { data } = await api.get<GetFavoriteBooksResponse>(USER_SERVICE_URL + "/favourites")
             return data
         } catch (e) {
             throw handleApiError(e)
@@ -26,10 +20,10 @@ export const FavoritesService = {
 
     async addFavoriteBook(bookId: number) {
         const payload: AddFavoriteBookRequest = {
-            bookId,
+            book_id: bookId,
         }
         try {
-            const data = await api.post<AddFavoriteBookRequest, AddFavoriteBookResponse>(USER_SERVICE_URL + "/favorites", payload)
+            const data = await api.post<AddFavoriteBookRequest, AddFavoriteBookResponse>(USER_SERVICE_URL + "/favourites", payload)
             return data
         } catch (e) {
             throw handleApiError(e)
@@ -37,11 +31,8 @@ export const FavoritesService = {
     },
 
     async removeFavoriteBook(bookId: number) {
-        const payload: RemoveFavoriteBookParameters = {
-            bookId: String(bookId),
-        }
         try {
-            const data = await api.delete<object, RemoveFavoriteBookResponse, RemoveFavoriteBookParameters>(USER_SERVICE_URL + "/favorites", { params: payload })
+            const data = await api.delete<object, RemoveFavoriteBookResponse>(USER_SERVICE_URL + `/favourites/${bookId}`)
             return data
         } catch (e) {
             throw handleApiError(e)
