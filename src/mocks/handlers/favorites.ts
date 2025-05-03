@@ -3,10 +3,10 @@ import type { BookDTO } from "../../types/bookDTO"
 import withDelay from "../withDelay"
 import type {
     AddFavoriteBookRequest,
+    RemoveFavoriteBookParameters,
     AddFavoriteBookResponse,
     GetFavoriteBooksParameters,
     GetFavoriteBooksResponse,
-    RemoveFavoriteBookParameters,
     RemoveFavoriteBookResponse,
 } from "../../api/user/types/favorites.d.ts"
 
@@ -41,11 +41,10 @@ export default function (allBooks: BookDTO[]) {
         http.delete<RemoveFavoriteBookParameters, object, RemoveFavoriteBookResponse>(
             USER_SERVICE_URL + "/favorites",
 
-            withDelay(250, async ({ request }) => {
-                const url = new URL(request.url)
-                const bookId = parseInt(url.searchParams.get("bookId")!)
+            withDelay(250, async ({ params }) => {
+                const book_id = parseInt(params.book_id)
 
-                const removedBook = allBooks.find((book) => book.id === bookId)!
+                const removedBook = allBooks.find((book) => book.id === book_id)!
                 removedBook.is_favorite = false
 
                 const response = { book: removedBook, added_at: new Date().toISOString() }

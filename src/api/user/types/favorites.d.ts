@@ -9,6 +9,10 @@ export type AddFavoriteBookResponse = {
     added_at: string
 }
 
+export type RemoveFavoriteBookParameters = {
+    book_id: string
+}
+
 export type RemoveFavoriteBookResponse = {
     book: BookDTO
     added_at: string

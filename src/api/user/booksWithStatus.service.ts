@@ -1,4 +1,4 @@
-import axios from "axios"
+import axios, { type AxiosResponse } from "axios"
 import { addAuthInterceptor, handleApiError } from "../axios"
 import type {
     AddToReadingListRequest,
@@ -19,17 +19,17 @@ const api = axios.create({ baseURL: USER_SERVICE_URL, timeout: DEFAULT_TIMEOUT }
 addAuthInterceptor(api)
 
 export const BooksWithStatusesService = {
-    async get(status?: BookStatus): Promise<BookType[]> {
-        let params: GetReadingListsParameters = {}
+    async get(status: BookStatus = "--"): Promise<BookType[]> {
+        let params: GetReadingListsParameters | null = null
 
-        if (status) {
+        if (status !== "--") {
             params = {
                 status: mapBookStatus(status),
             }
         }
 
         try {
-            const { data } = await api.get<GetReadingListsResponse>(USER_SERVICE_URL + "/reading-list", { params })
+            const { data } = await api.get<GetReadingListsResponse, AxiosResponse<GetReadingListsResponse>, GetReadingListsParameters>(USER_SERVICE_URL + "/reading-list", { params })
 
             if (!Array.isArray(data)) {
                 throw new Error(`get books with status: Invalid response format ${data}`)
@@ -41,7 +41,7 @@ export const BooksWithStatusesService = {
         }
     },
 
-    async setStatus(bookId: string, status: BookStatus) {
+    async setStatus(bookId: number, status: BookStatus) {
         const dtoStatus = mapBookStatus(status)
         if (dtoStatus === "") {
             return this.removeStatus(bookId)
@@ -50,9 +50,9 @@ export const BooksWithStatusesService = {
         }
     },
 
-    async removeStatus(bookId: string) {
+    async removeStatus(bookId: number) {
         const params: RemoveFromReadingListParameters = {
-            bookId: String(bookId),
+            book_id: bookId,
         }
         try {
             const data = await api.delete<object, RemoveFromReadingListResponse, RemoveFromReadingListParameters>(USER_SERVICE_URL + "/reading-list", { params: params })
@@ -61,9 +61,9 @@ export const BooksWithStatusesService = {
             throw handleApiError(e)
         }
     },
-    async addStatus(bookId: string, status: BookDTOStatus) {
+    async addStatus(bookId: number, status: BookDTOStatus) {
         const payload: AddToReadingListRequest = {
-            bookId: bookId,
+            book_id: bookId,
             status: status,
         }
         try {

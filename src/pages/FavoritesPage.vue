@@ -1,16 +1,17 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue"
 import BookList from "../components/BookList.vue"
-import useFavoritesStore from "../stores/favorites.store"
+import type { BookType } from "../types/book"
+import { FavoritesService } from "../api/user/favorites.service"
 
 const isLoading = ref(true)
 const error = ref("")
 
-const favStore = useFavoritesStore()
+const books = ref<BookType[]>([])
 
 onMounted(async () => {
     try {
-        await favStore.fetchFavoriteBooks()
+        books.value = await FavoritesService.getFavoriteBooks()
     } catch (e) {
         if (e instanceof Error) {
             error.value = e.message
@@ -31,7 +32,7 @@ onMounted(async () => {
         <p v-else-if="!isLoading && error">
             {{ error }}
         </p>
-        <BookList v-else :books="favStore.books" />
+        <BookList v-else :books="books" />
     </div>
 </template>
 

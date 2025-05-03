@@ -2,7 +2,7 @@ export const BookStatusMap = {
     want: "want",
     reading: "reading",
     read: "done",
-    none: "",
+    none: "--",
 } as const
 
 type BookStatus = (typeof BookStatusMap)[keyof typeof BookStatusMap]

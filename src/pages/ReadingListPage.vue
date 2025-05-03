@@ -1,16 +1,17 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue"
 import BookList from "../components/BookList.vue"
-import useBooksWithStatusesStore from "../stores/booksWithStatuses.store"
+import { BooksWithStatusesService } from "../api/user/booksWithStatus.service"
+import type { BookType } from "../types/book"
 
 const isLoading = ref(true)
 const error = ref("")
 
-const booksWithStatusesStore = useBooksWithStatusesStore()
+const books = ref<BookType[]>([])
 
 onMounted(async () => {
     try {
-        await booksWithStatusesStore.fetch()
+        books.value = await BooksWithStatusesService.get("reading")
     } catch (e) {
         if (e instanceof Error) {
             error.value = e.message
@@ -31,7 +32,7 @@ onMounted(async () => {
         <p v-else-if="!isLoading && error">
             {{ error }}
         </p>
-        <BookList v-else :books="booksWithStatusesStore.getBooks('reading')" />
+        <BookList v-else :books="books" />
     </div>
 </template>
 

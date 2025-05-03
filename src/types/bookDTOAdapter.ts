@@ -16,7 +16,7 @@ export function mapDTOBookStatus(dtoStatus: BookDTOStatus): BookStatus {
         want_to_read: "want",
         reading: "reading",
         done: "done",
-        "": "",
+        "": "--",
     }
     return reverseMap[dtoStatus]
 }
@@ -26,7 +26,7 @@ export function mapBookStatus(status: BookStatus): BookDTOStatus {
         want: "want_to_read",
         reading: "reading",
         done: "done",
-        "": "",
+        "--": "",
     }
     return reverseMap[status]
 }

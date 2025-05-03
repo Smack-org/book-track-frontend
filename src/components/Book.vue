@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { computed, defineProps, reactive, watch } from "vue"
 import { BookStatuses, type BookType } from "../types/book.d"
-import useFavoritesStore from "../stores/favorites.store"
+import { FavoritesService } from "../api/user/favorites.service"
+import { BooksWithStatusesService } from "../api/user/booksWithStatus.service"
 
 interface Props {
     book: BookType
@@ -17,19 +18,15 @@ const bookLink = computed(() => {
     return { name: "book", params: { bookId: `${book.id}` } }
 })
 
-const favStore = useFavoritesStore()
-
 const toggleFavorite = () => {
     book.is_favorite = !book.is_favorite
-    favStore.toggleBook(book)
+    FavoritesService.setFavoriteBook(book.id, book.is_favorite)
 }
-
-// const statusStore = useBooksWithStatusesStore()
 
 watch(
     () => book.status,
     () => {
-        // TODO: update store
+        BooksWithStatusesService.setStatus(book.id, book.status)
     }
 )
 </script>

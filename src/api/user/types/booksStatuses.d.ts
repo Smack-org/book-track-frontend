@@ -2,7 +2,7 @@ import type { BookDTOStatuses } from "../../../types/bookDTO"
 import type { BookDTO } from "../../types/bookDTO"
 
 export type AddToReadingListRequest = {
-    bookId: string
+    book_id: number
     status: BookDTOStatuses
 }
 
@@ -12,7 +12,7 @@ export type AddToReadingListResponse = {
 }
 
 export type RemoveFromReadingListParameters = {
-    bookId: string
+    book_id: number
 }
 
 export type RemoveFromReadingListResponse = {
