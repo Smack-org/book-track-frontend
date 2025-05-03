@@ -1,13 +1,6 @@
 import axios, { type AxiosResponse } from "axios"
 import { addAuthInterceptor, handleApiError } from "../axios"
-import type {
-    AddToReadingListRequest,
-    AddToReadingListResponse,
-    GetReadingListsParameters,
-    GetReadingListsResponse,
-    RemoveFromReadingListParameters,
-    RemoveFromReadingListResponse,
-} from "./types/booksStatuses"
+import type { AddToReadingListRequest, AddToReadingListResponse, GetReadingListsParameters, GetReadingListsResponse, RemoveFromReadingListParameters } from "./types/booksStatuses"
 import type { BookStatus, BookType } from "../../types/book"
 import { adaptBookFromDTO, mapBookStatus } from "../../types/bookDTOAdapter"
 import type { BookDTOStatus } from "../../types/bookDTO"
@@ -44,23 +37,24 @@ export const BooksWithStatusesService = {
     async setStatus(bookId: number, status: BookStatus) {
         const dtoStatus = mapBookStatus(status)
         if (dtoStatus === "") {
-            return this.removeStatus(bookId)
+            return this.removeStatus(String(bookId))
         } else {
             return this.addStatus(bookId, dtoStatus)
         }
     },
 
-    async removeStatus(bookId: number) {
+    async removeStatus(bookId: string) {
         const params: RemoveFromReadingListParameters = {
             book_id: bookId,
         }
         try {
-            const data = await api.delete<object, RemoveFromReadingListResponse, RemoveFromReadingListParameters>(USER_SERVICE_URL + "/reading-list", { params: params })
+            const data = await api.delete(USER_SERVICE_URL + `/reading-list/${params.book_id}`)
             return data
         } catch (e) {
             throw handleApiError(e)
         }
     },
+
     async addStatus(bookId: number, status: BookDTOStatus) {
         const payload: AddToReadingListRequest = {
             book_id: bookId,

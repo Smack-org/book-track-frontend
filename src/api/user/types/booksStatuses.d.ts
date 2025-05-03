@@ -12,12 +12,7 @@ export type AddToReadingListResponse = {
 }
 
 export type RemoveFromReadingListParameters = {
-    book_id: number
-}
-
-export type RemoveFromReadingListResponse = {
-    book: BookDTO
-    added_at: string
+    book_id: string
 }
 
 export type GetReadingListsParameters = {

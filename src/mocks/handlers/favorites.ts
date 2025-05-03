@@ -39,7 +39,7 @@ export default function (allBooks: BookDTO[]) {
             })
         ),
         http.delete<RemoveFavoriteBookParameters, object, RemoveFavoriteBookResponse>(
-            USER_SERVICE_URL + "/favourites",
+            USER_SERVICE_URL + "/favourites/:book_id",
 
             withDelay(250, async ({ params }) => {
                 const book_id = parseInt(params.book_id)
