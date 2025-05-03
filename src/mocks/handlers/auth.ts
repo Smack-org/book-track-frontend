@@ -5,7 +5,7 @@ const AUTH_URL = import.meta.env.VITE_AUTH_SERVICE_URL
 
 export default function () {
     return [
-        http.post<RegisterRequest, RegisterResponse>(AUTH_URL + "/auth/register", () => {
+        http.post<RegisterRequest, RegisterResponse>(AUTH_URL + "/users/new", () => {
             const resonse: RegisterResponse = {
                 access_token: "123",
                 token_type: "bearer",
@@ -13,7 +13,7 @@ export default function () {
 
             return HttpResponse.json(resonse)
         }),
-        http.post<LoginRequest, LoginResponse>(AUTH_URL + "/auth/login", () => {
+        http.post<LoginRequest, LoginResponse>(AUTH_URL + "/users/token", () => {
             const resonse: LoginResponse = {
                 access_token: "123",
                 token_type: "bearer",
@@ -21,7 +21,7 @@ export default function () {
 
             return HttpResponse.json(resonse)
         }),
-        http.get<GetUserResponse>(AUTH_URL + "/me", () => {
+        http.get<GetUserResponse>(AUTH_URL + "/users/me", () => {
             const resonse: GetUserResponse = {
                 login: "some_login",
                 id: "123",
