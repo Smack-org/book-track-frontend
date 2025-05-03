@@ -1,7 +1,6 @@
 import { http, HttpResponse } from "msw"
 import type { BookDTO, BookDTOStatus } from "../../types/bookDTO"
 import withDelay from "../withDelay"
-import type {} from "../../api/user/types/favorites"
 import type { GetReadingListsParameters, GetReadingListsResponse } from "../../api/user/types/booksStatuses"
 
 const USER_SERVICE_URL = import.meta.env.VITE_USER_SERVICE_URL
