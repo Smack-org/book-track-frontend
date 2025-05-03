@@ -6,6 +6,7 @@ import { TokenService } from "./tokens.localstore"
 type AuthCreds = {
     login: string
     password: string
+    username: string
 }
 
 const useAuthStore = defineStore("userStore", {
@@ -28,10 +29,9 @@ const useAuthStore = defineStore("userStore", {
             this.loading = true
             this.error = null
             try {
-                const { token, userId } = await AuthAPI.login(user_login, password)
-
-                this.setTokens(token)
-                this.user = { login: user_login, uid: userId }
+                const { access_token } = await AuthAPI.login(user_login, password)
+                this.setTokens(access_token)
+                await this.fetchUser()
             } catch (e) {
                 this.error = handleAuthError(e) || "login failed"
                 console.error(e)
@@ -41,12 +41,12 @@ const useAuthStore = defineStore("userStore", {
             }
         },
 
-        async register({ login, password }: AuthCreds) {
+        async register({ login, password, username }: AuthCreds) {
             this.loading = true
             try {
-                const { token, userId } = await AuthAPI.register(login, password)
-                this.setTokens(token)
-                this.user = { login: login, uid: userId }
+                const { access_token } = await AuthAPI.register(username, login, password)
+                this.setTokens(access_token)
+                await this.fetchUser()
             } catch (e: unknown) {
                 this.error = handleAuthError(e) || "registration failed"
                 throw e
@@ -65,8 +65,8 @@ const useAuthStore = defineStore("userStore", {
             if (!this.token) return
 
             try {
-                const userData = await AuthAPI.getUser()
-                this.user = { login: userData.login, uid: userData.uid }
+                const { username, login, uid } = await AuthAPI.getUser()
+                this.user = { username, login, uid }
             } catch (e) {
                 this.logout()
                 throw e

@@ -1,7 +1,7 @@
 import axios from "axios"
 import type { BookType } from "../types/book"
 import type { BookDTO } from "../types/bookDTO"
-import { handleApiError } from "./axios"
+import { addAuthInterceptor, handleApiError } from "./axios"
 import { adaptBookFromDTO } from "../types/bookDTOAdapter"
 
 const BOOK_SERVICE_URL = import.meta.env.VITE_BOOK_SERVICE_URL
@@ -15,6 +15,7 @@ const apiClient = axios.create({
         Accept: "application/json",
     },
 })
+addAuthInterceptor(apiClient)
 
 type ApiResponse = {
     count: number

@@ -19,7 +19,7 @@ async function register() {
     isLogging.value = true
 
     try {
-        await authStore.register(creds)
+        await authStore.register({ login: creds.login, username: creds.login, password: creds.password })
     } catch (e) {
         error.value = `Failed to register. ${handleAuthError(e)}`
         return

@@ -1,26 +1,27 @@
 export interface LoginRequest {
-    login: string
+    username: string
     password: string
 }
 
 export interface LoginResponse {
-    token: string
-    expiresIn: string
-    userId: string
+    access_token: string
+    token_type: string
 }
 
 export interface RegisterRequest {
+    username: string
     login: string
     password: string
 }
 
 export interface RegisterResponse {
-    token: string
-    expiresIn: string
-    userId: string
+    access_token: string
+    token_type: string
 }
 
 export interface GetUserResponse {
-    userId: string
     login: string
+    id: string
+    username: string
+    created_at: string
 }

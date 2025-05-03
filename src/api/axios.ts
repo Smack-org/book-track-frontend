@@ -5,7 +5,7 @@ export const addAuthInterceptor = (axiosInstance: AxiosInstance) => {
     axiosInstance.interceptors.request.use((config) => {
         const { token } = useAuthStore()
         if (token) {
-            config.headers.Authorization = `${token}`
+            config.headers.Authorization = `Bearer ${token}`
         }
         return config
     })
@@ -14,6 +14,7 @@ export const addAuthInterceptor = (axiosInstance: AxiosInstance) => {
         (response) => response,
         (error) => {
             if (error.response?.status === 401) {
+                console.log(`Axios interceptor: got 401, logging out`)
                 useAuthStore().logout()
             }
             return Promise.reject(error)

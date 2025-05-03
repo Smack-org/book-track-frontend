@@ -19,7 +19,7 @@ async function login() {
     isLogging.value = true
 
     try {
-        await authStore.login(creds)
+        await authStore.login({ login: creds.login, username: creds.login, password: creds.password })
     } catch (e) {
         error.value = `Failed to log in. ${handleAuthError(e)}`
         return
