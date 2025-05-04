@@ -3,11 +3,8 @@ import BookList from "../components/BookList.vue"
 import { BookService } from "../api/book.service"
 import { debounce } from "lodash-es"
 import type { BookType } from "../types/book"
-import { useRoute, useRouter, type LocationQuery } from "vue-router"
-import { ref } from "vue"
-
-const route = useRoute()
-const router = useRouter()
+import { reactive, ref, watch } from "vue"
+import Pagination from "../components/Pagination.vue"
 
 type SearchProps = {
     query: string
@@ -15,23 +12,31 @@ type SearchProps = {
     topic: string
 }
 
-const getSearchQuery = (query: LocationQuery): SearchProps => {
-    return {
-        query: query.query ? String(query.query) : "",
-        topic: query.topic ? String(query.topic) : "",
-        sort: query.sort === "ascending" || query.sort === "descending" ? query.sort : "descending",
-    }
-}
-
-const searchProps: SearchProps = getSearchQuery(route.query)
-
 const books = ref<BookType[]>([])
 const isLoading = ref(false)
 const error = ref("")
 
-const updateBooks = () => {
-    updateUrl()
+const searchProps: SearchProps = reactive({
+    query: "",
+    sort: "ascending",
+    topic: "",
+})
 
+const currentPage = ref(1)
+const totalBooks = ref(1)
+const BOOKS_PER_PAGE = 20
+
+watch(searchProps, () => {
+    currentPage.value = 1
+})
+
+updateBooks()
+
+function totalPages() {
+    return Math.ceil(totalBooks.value / BOOKS_PER_PAGE)
+}
+
+function updateBooks() {
     const debouncedUpdate = debounce(async ({ query, sort, topic }: SearchProps) => {
         const searchParams = {
             query,
@@ -43,7 +48,9 @@ const updateBooks = () => {
         error.value = ""
 
         try {
-            books.value = await BookService.searchBooks(searchParams)
+            const response = await BookService.searchBooks(searchParams)
+            books.value = response.books
+            totalBooks.value = response.count
         } catch (e) {
             if (e instanceof Error) {
                 error.value = `${e.message}`
@@ -58,17 +65,10 @@ const updateBooks = () => {
     debouncedUpdate(searchProps)
 }
 
-const updateUrl = () => {
-    router.push({
-        query: {
-            query: searchProps.query || undefined,
-            sort: searchProps.sort !== "descending" ? searchProps.sort : undefined,
-            topic: searchProps.topic || undefined,
-        },
-    })
+function updateSelectedPage(page: number) {
+    currentPage.value = page
+    updateBooks()
 }
-
-updateBooks()
 </script>
 
 <template>
@@ -101,7 +101,10 @@ updateBooks()
         <p v-else-if="!isLoading && error">
             {{ error }}
         </p>
-        <BookList v-else :books="books" />
+        <Pagination v-else :cur-page="currentPage" :pages-num="totalPages()" @selected-page="updateSelectedPage">
+            found {{ totalBooks }} books
+            <BookList :books="books" />
+        </Pagination>
     </div>
 </template>
 

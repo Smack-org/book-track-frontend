@@ -3,6 +3,7 @@ import type { BookType } from "../types/book"
 import type { BookDTO } from "../types/bookDTO"
 import { addAuthInterceptor, handleApiError } from "./axios"
 import { adaptBookFromDTO } from "../types/bookDTOAdapter"
+import type { SearchResult } from "../types/SearchResult"
 
 const BOOK_SERVICE_URL = import.meta.env.VITE_BOOK_SERVICE_URL
 const DEFAULT_TIMEOUT = 10000
@@ -17,7 +18,7 @@ const apiClient = axios.create({
 })
 addAuthInterceptor(apiClient)
 
-type ApiResponse = {
+type ApiSearchResponse = {
     count: number
     next: string
     previous: null
@@ -28,21 +29,13 @@ type SearchParams = {
     query?: string
     sort?: "ascending" | "descending"
     topic?: string
+    page?: number
 }
 
 export const BookService = {
-    async getBooks(): Promise<BookType[]> {
-        try {
-            const response = await apiClient.get<ApiResponse>("/books")
-            return response.data.results.map((b) => adaptBookFromDTO(b))
-        } catch (error) {
-            throw handleApiError(error)
-        }
-    },
-
     async getBookById(id: number): Promise<BookType> {
         try {
-            const response = await apiClient.get<ApiResponse>(`/books`, {
+            const response = await apiClient.get<ApiSearchResponse>(`/books`, {
                 params: { ids: id },
             })
 
@@ -58,7 +51,7 @@ export const BookService = {
 
     async getBooksByIds(ids: number[]): Promise<BookType[]> {
         try {
-            const response = await apiClient.get<ApiResponse>(`/books`, {
+            const response = await apiClient.get<ApiSearchResponse>(`/books`, {
                 params: { ids },
             })
             return response.data.results.map((b) => adaptBookFromDTO(b))
@@ -67,12 +60,15 @@ export const BookService = {
         }
     },
 
-    async searchBooks({ query, sort, topic }: SearchParams): Promise<BookType[]> {
+    async searchBooks({ query, sort, topic, page }: SearchParams): Promise<SearchResult> {
         try {
-            const response = await apiClient.get<ApiResponse>("/books", {
-                params: { search: query, sort: sort, topic: topic },
+            const response = await apiClient.get<ApiSearchResponse>("/books", {
+                params: { search: query, sort, topic, page },
             })
-            return response.data.results.map((b) => adaptBookFromDTO(b))
+            return {
+                count: response.data.count,
+                books: response.data.results.map((b) => adaptBookFromDTO(b)),
+            }
         } catch (error) {
             throw handleApiError(error)
         }
