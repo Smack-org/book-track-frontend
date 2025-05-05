@@ -1,4 +1,5 @@
 import { defineConfig } from "vitest/config"
+import vue from "@vitejs/plugin-vue"
 
 export default defineConfig({
     test: {
@@ -6,4 +7,5 @@ export default defineConfig({
             reporter: ["text", "json", "html"],
         },
     },
+    plugins: [vue()],
 })
