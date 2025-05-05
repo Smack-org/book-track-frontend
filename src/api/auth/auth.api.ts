@@ -1,13 +1,11 @@
 import axios, { type AxiosResponse } from "axios"
-import { addAuthInterceptor } from "../axios"
+import { createAuthApiInstance } from "../axios"
 import type { GetUserResponse, LoginRequest, LoginResponse, RegisterRequest, RegisterResponse } from "./types/auth"
 import type { User } from "../../types/user"
 import qs from "qs"
 
 const AUTH_SERVICE_URL = import.meta.env.VITE_AUTH_SERVICE_URL
-
-const api = axios.create({ baseURL: AUTH_SERVICE_URL })
-addAuthInterceptor(api)
+const api = createAuthApiInstance(AUTH_SERVICE_URL)
 
 export const AuthAPI = {
     async login(username: string, password: string): Promise<LoginResponse> {
@@ -25,7 +23,7 @@ export const AuthAPI = {
         }
 
         try {
-            const { data } = await api.post<LoginResponse>(`${AUTH_SERVICE_URL}/users/token`, paramsStr, config)
+            const { data } = await api.post<LoginResponse>(`/users/token`, paramsStr, config)
             return data
         } catch (e) {
             throw handleAxiosError(e)
@@ -40,7 +38,7 @@ export const AuthAPI = {
         }
 
         try {
-            const { data } = await api.post<RegisterResponse, AxiosResponse<RegisterResponse>, RegisterRequest>(`${AUTH_SERVICE_URL}/users/new`, payload)
+            const { data } = await api.post<RegisterResponse, AxiosResponse<RegisterResponse>, RegisterRequest>(`/users/new`, payload)
             return data
         } catch (e) {
             throw handleAxiosError(e)

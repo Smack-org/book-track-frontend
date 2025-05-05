@@ -1,30 +1,32 @@
 import axios, { type AxiosInstance } from "axios"
 import useAuthStore from "../stores/auth.store"
 
-export const addAuthInterceptor = (axiosInstance: AxiosInstance) => {
-    axiosInstance.interceptors.request.use((config) => {
-        const { token } = useAuthStore()
-        if (token) {
-            config.headers.Authorization = `Bearer ${token}`
+export function createAuthApiInstance(baseURL: string): AxiosInstance {
+    const instance = axios.create({ baseURL })
+
+    instance.interceptors.request.use((config) => {
+        const authStore = useAuthStore()
+        if (authStore.token) {
+            config.headers.Authorization = `Bearer ${authStore.token}`
         }
+
         return config
     })
 
-    axiosInstance.interceptors.response.use(
+    instance.interceptors.response.use(
         (response) => response,
         (error) => {
             if (error.response?.status === 401) {
-                console.log(`Axios interceptor: got 401, logging out`)
-                useAuthStore().logout()
+                const authStore = useAuthStore()
+                authStore.logout()
                 window.location.href = "/login"
             }
             return Promise.reject(new Error(error))
         }
     )
 
-    return axiosInstance
+    return instance
 }
-
 export function handleApiError(error: unknown): Error {
     if (axios.isAxiosError(error)) {
         console.error("API Error:", {
