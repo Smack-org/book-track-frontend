@@ -50,7 +50,7 @@ async function register() {
         <button>register</button>
 
         <div v-if="isLogging">Logging...</div>
-        <div v-if="error && !isLogging">
+        <div v-if="error && !isLogging" class="error">
             {{ error }}
         </div>
     </form>
