@@ -11,7 +11,7 @@ defineProps<Props>()
 
 <template>
     <ul>
-        <li v-for="book in books" :key="book.id">
+        <li v-for="book in books" :key="book.id" class="books-item">
             <Book :book="book" />
         </li>
     </ul>
