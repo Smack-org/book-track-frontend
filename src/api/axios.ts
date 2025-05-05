@@ -16,6 +16,7 @@ export const addAuthInterceptor = (axiosInstance: AxiosInstance) => {
             if (error.response?.status === 401) {
                 console.log(`Axios interceptor: got 401, logging out`)
                 useAuthStore().logout()
+                window.location.href = "/login"
             }
             return Promise.reject(new Error(error))
         }
