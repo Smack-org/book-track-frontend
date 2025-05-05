@@ -90,4 +90,5 @@ export const handleAuthError = (e: unknown): string => {
     }
 }
 
+export type AuthStoreType = ReturnType<typeof useAuthStore>
 export default useAuthStore
