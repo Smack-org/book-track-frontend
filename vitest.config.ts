@@ -3,6 +3,7 @@ import vue from "@vitejs/plugin-vue"
 
 export default defineConfig({
     test: {
+        globals: true,
         coverage: {
             reporter: ["text", "json", "html"],
             exclude: [
@@ -29,6 +30,7 @@ export default defineConfig({
             ],
         },
         environment: "happy-dom",
+        setupFiles: ["./tests/setup.ts"],
     },
     plugins: [vue()],
 })
