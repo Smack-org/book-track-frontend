@@ -17,7 +17,7 @@ export const addAuthInterceptor = (axiosInstance: AxiosInstance) => {
                 console.log(`Axios interceptor: got 401, logging out`)
                 useAuthStore().logout()
             }
-            return Promise.reject(error)
+            return Promise.reject(new Error(error))
         }
     )
 
@@ -31,7 +31,7 @@ export function handleApiError(error: unknown): Error {
             status: error.response?.status,
             data: error.response?.data,
         })
-        return new Error(error.response?.data?.message || "An error occurred while fetching books")
+        return new Error(error.response?.data?.message ?? "An error occurred while fetching books")
     }
     console.error("Unexpected error:", error)
     return new Error("An unexpected error occurred")

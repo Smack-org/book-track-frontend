@@ -35,5 +35,3 @@ onMounted(async () => {
         <BookList v-else :books="books" />
     </div>
 </template>
-
-<style lang="css" scoped></style>

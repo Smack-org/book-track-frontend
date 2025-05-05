@@ -35,5 +35,3 @@ onMounted(() => {
     <p v-else-if="isBookLoading">Loading...</p>
     <Book v-else-if="book" :book="book" />
 </template>
-
-<style lang="css" scoped></style>

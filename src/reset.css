@@ -9,11 +9,7 @@
 }
 
 /* 3. Enable keyword animations */
-@media (prefers-reduced-motion: no-preference) {
-  html {
-    interpolate-size: allow-keywords;
-  }
-}
+/* interpolate-size isn't yet widely supported */
 
 body {
   /* 4. Add accessible line-height */
