@@ -6,6 +6,7 @@ export default defineConfig({
         coverage: {
             reporter: ["text", "json", "html"],
         },
+        environment: "happy-dom",
     },
     plugins: [vue()],
 })
