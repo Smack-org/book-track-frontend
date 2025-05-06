@@ -10,7 +10,7 @@
     "sonar": "sonar-scanner",
     "eslint": "eslint .",
     "eslint:fix": "eslint . --fix",
-    "test": "vitest",
+    "test": "vitest run",
     "test:cov": "vitest run --coverage"
   },
   "dependencies": {
