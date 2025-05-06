@@ -80,7 +80,6 @@ article {
     background: white;
     border-radius: 8px;
     padding: 1.5rem;
-    height: 100%;
 }
 
 h3 {
