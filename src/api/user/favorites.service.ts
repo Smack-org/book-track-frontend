@@ -1,14 +1,10 @@
-import axios from "axios"
-import { addAuthInterceptor, handleApiError } from "../axios"
+import { createAuthApiInstance, handleApiError } from "../axios"
 import type { AddFavoriteBookRequest, AddFavoriteBookResponse, GetFavoriteBooksResponse, RemoveFavoriteBookResponse } from "./types/favorites"
 import type { BookType } from "../../types/book"
 import { adaptBookFromDTO } from "../../types/bookDTOAdapter"
 
 const USER_SERVICE_URL = import.meta.env.VITE_USER_SERVICE_URL
-const DEFAULT_TIMEOUT = 5000
-
-const api = axios.create({ baseURL: USER_SERVICE_URL, timeout: DEFAULT_TIMEOUT })
-addAuthInterceptor(api)
+const api = createAuthApiInstance(USER_SERVICE_URL)
 
 export const FavoritesService = {
     async getFavoriteBooks(): Promise<BookType[]> {

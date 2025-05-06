@@ -1,15 +1,13 @@
-import axios, { type AxiosResponse } from "axios"
-import { addAuthInterceptor, handleApiError } from "../axios"
+import { type AxiosResponse } from "axios"
+import { createAuthApiInstance, handleApiError } from "../axios"
 import type { AddToReadingListRequest, AddToReadingListResponse, GetReadingListsParameters, GetReadingListsResponse, RemoveFromReadingListParameters } from "./types/booksStatuses"
 import type { BookStatus, BookType } from "../../types/book"
 import { adaptBookFromDTO, mapBookStatus } from "../../types/bookDTOAdapter"
 import type { BookDTOStatus } from "../../types/bookDTO"
 
 const USER_SERVICE_URL = import.meta.env.VITE_USER_SERVICE_URL
-const DEFAULT_TIMEOUT = 5000
 
-const api = axios.create({ baseURL: USER_SERVICE_URL, timeout: DEFAULT_TIMEOUT })
-addAuthInterceptor(api)
+const api = createAuthApiInstance(USER_SERVICE_URL)
 
 export const BooksWithStatusesService = {
     async get(status: BookStatus = "--"): Promise<BookType[]> {
@@ -37,9 +35,9 @@ export const BooksWithStatusesService = {
     async setStatus(bookId: number, status: BookStatus) {
         const dtoStatus = mapBookStatus(status)
         if (dtoStatus === "") {
-            return this.removeStatus(String(bookId))
+            this.removeStatus(String(bookId))
         } else {
-            return this.addStatus(bookId, dtoStatus)
+            this.addStatus(bookId, dtoStatus)
         }
     },
 

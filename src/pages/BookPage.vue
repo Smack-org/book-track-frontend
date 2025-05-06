@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue"
-import Book from "../components/Book.vue"
+import DummyBook from "../components/DummyBook.vue"
 import { BookService } from "../api/book.service"
 import type { BookType } from "../types/book"
 
@@ -31,7 +31,9 @@ onMounted(() => {
 </script>
 
 <template>
-    <p v-if="error">error</p>
-    <p v-else-if="isBookLoading">Loading...</p>
-    <Book v-else-if="book" :book="book" />
+    <div class="book">
+        <p v-if="error">error</p>
+        <p v-else-if="isBookLoading">Loading...</p>
+        <DummyBook v-else-if="book" :book="book" />
+    </div>
 </template>

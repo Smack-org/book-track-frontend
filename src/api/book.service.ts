@@ -1,22 +1,11 @@
-import axios from "axios"
 import type { BookType } from "../types/book"
 import type { BookDTO } from "../types/bookDTO"
-import { addAuthInterceptor, handleApiError } from "./axios"
+import { createAuthApiInstance, handleApiError } from "./axios"
 import { adaptBookFromDTO } from "../types/bookDTOAdapter"
 import type { SearchResult } from "../types/SearchResult"
 
 const BOOK_SERVICE_URL = import.meta.env.VITE_BOOK_SERVICE_URL
-const DEFAULT_TIMEOUT = 10000
-
-const apiClient = axios.create({
-    baseURL: BOOK_SERVICE_URL,
-    timeout: DEFAULT_TIMEOUT,
-    headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-    },
-})
-addAuthInterceptor(apiClient)
+const apiClient = createAuthApiInstance(BOOK_SERVICE_URL)
 
 type ApiSearchResponse = {
     count: number

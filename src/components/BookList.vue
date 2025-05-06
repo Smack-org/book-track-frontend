@@ -1,18 +1,21 @@
 <script setup lang="ts">
-import Book from "./Book.vue"
 import type { BookType } from "../types/book"
 
 interface Props {
     books: BookType[]
 }
 
+defineSlots<{
+    default: (props: { book: BookType }) => unknown
+}>()
+
 defineProps<Props>()
 </script>
 
 <template>
     <ul>
-        <li v-for="book in books" :key="book.id">
-            <Book :book="book" />
+        <li v-for="book in books" :key="book.id" class="books-item">
+            <slot :book="book" />
         </li>
     </ul>
 </template>
@@ -25,6 +28,7 @@ ul {
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 1.5rem;
     margin: 2rem 0;
+    width: 100%;
 }
 
 li {
