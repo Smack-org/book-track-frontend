@@ -5,6 +5,7 @@ import { type BookType } from "../types/book.d"
 import { FavoritesService } from "../api/user/favorites.service"
 import { BooksWithStatusesService } from "../api/user/booksWithStatus.service"
 import BookList from "../components/BookList.vue"
+import DummyBook from "../components/DummyBook.vue"
 
 const auth = useAuthStore()
 
@@ -52,12 +53,20 @@ onMounted(async () => {
         <div class="book-sections">
             <section class="book-section">
                 <h3>Want to Read</h3>
-                <BookList :books="wantToRead" />
+                <BookList :books="wantToRead">
+                    <template #default="{ book }">
+                        <DummyBook :book="book" />
+                    </template>
+                </BookList>
             </section>
 
             <section class="book-section">
                 <h3>Recently Completed</h3>
-                <BookList :books="completedBooks" />
+                <BookList :books="completedBooks">
+                    <template #default="{ book }">
+                        <DummyBook :book="book" />
+                    </template>
+                </BookList>
             </section>
         </div>
     </div>

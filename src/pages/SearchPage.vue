@@ -5,6 +5,7 @@ import { debounce } from "lodash-es"
 import type { BookType } from "../types/book"
 import { reactive, ref, watch } from "vue"
 import Pagination from "../components/Pagination.vue"
+import Book from "../components/Book.vue"
 
 type SearchProps = {
     query: string
@@ -103,7 +104,11 @@ function updateSelectedPage(page: number) {
         </p>
         <Pagination v-else :cur-page="currentPage" :pages-num="totalPages()" @selected-page="updateSelectedPage">
             found {{ totalBooks }} books
-            <BookList :books="books" />
+            <BookList :books="books">
+                <template #default="{ book }">
+                    <Book :book="book" />
+                </template>
+            </BookList>
         </Pagination>
     </div>
 </template>
