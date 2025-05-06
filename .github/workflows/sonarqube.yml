@@ -32,6 +32,9 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      - name: Run coverage
+        run: pnpm run test:cov
+
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v5
         env:
