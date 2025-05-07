@@ -16,7 +16,7 @@ type ApiSearchResponse = {
 
 type SearchParams = {
     query?: string
-    sort?: "ascending" | "descending"
+    sort?: "ascending" | "descending" | "popular"
     topic?: string
     page?: number
 }

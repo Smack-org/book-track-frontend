@@ -9,7 +9,7 @@ import Book from "../components/Book.vue"
 
 type SearchProps = {
     query: string
-    sort: "ascending" | "descending"
+    sort: "ascending" | "descending" | "popular"
     topic: string
 }
 
@@ -81,10 +81,11 @@ function updateSelectedPage(page: number) {
             </div>
 
             <div>
-                <label for="popularity">popularity sort: </label>
+                <label for="popularity">sort: </label>
                 <select id="" v-model="searchProps.sort" name="popularity">
-                    <option value="ascending">ascending</option>
-                    <option value="descending">descending</option>
+                    <option value="ascending">ascending IDs</option>
+                    <option value="descending">descending IDs</option>
+                    <option value="popular">most popular</option>
                 </select>
             </div>
 
