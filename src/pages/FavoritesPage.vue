@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue"
 import BookList from "../components/BookList.vue"
-import DummyBook from "../components/DummyBook.vue"
+import Book from "../components/Book.vue"
 import type { BookType } from "../types/book"
 import { FavoritesService } from "../api/user/favorites.service"
 
@@ -12,7 +12,10 @@ const books = ref<BookType[]>([])
 
 onMounted(async () => {
     try {
-        books.value = await FavoritesService.getFavoriteBooks()
+        books.value = (await FavoritesService.getFavoriteBooks()).map((b) => {
+            b.is_favorite = true
+            return b
+        })
     } catch (e) {
         if (e instanceof Error) {
             error.value = e.message
@@ -35,7 +38,7 @@ onMounted(async () => {
         </p>
         <BookList v-else :books="books">
             <template #default="{ book }">
-                <DummyBook :book="book" />
+                <Book :book="book" />
             </template>
         </BookList>
     </div>

@@ -12,9 +12,9 @@ vi.mock("../components/BookList.vue", () => ({
     },
 }))
 
-vi.mock("../components/DummyBook.vue", () => ({
+vi.mock("../components/Book.vue", () => ({
     default: {
-        name: "DummyBook",
+        name: "Book",
         props: ["book"],
         template: `<div class="dummy-book">{{ book.title }}</div>`,
     },

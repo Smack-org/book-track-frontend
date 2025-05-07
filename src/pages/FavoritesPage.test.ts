@@ -12,11 +12,11 @@ vi.mock("../components/BookList.vue", () => ({
     },
 }))
 
-vi.mock("../components/DummyBook.vue", () => ({
+vi.mock("../components/Book.vue", () => ({
     default: {
-        name: "DummyBook",
+        name: "Book",
         props: ["book"],
-        template: "<div class='dummy-book'>{{ book.title }}</div>",
+        template: "<div class='book'>{{ book.title }}</div>",
     },
 }))
 
@@ -47,7 +47,7 @@ describe("FavoritesPage", () => {
         const wrapper = mount(FavoritesView)
         await flushPromises()
 
-        expect(wrapper.findAll(".dummy-book")).toHaveLength(2)
+        expect(wrapper.findAll(".book")).toHaveLength(2)
         expect(wrapper.text()).toContain("Book One")
         expect(wrapper.text()).toContain("Book Two")
     })

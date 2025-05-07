@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue"
 import BookList from "../components/BookList.vue"
-import DummyBook from "../components/DummyBook.vue"
+import Book from "../components/Book.vue"
 import { BooksWithStatusesService } from "../api/user/booksWithStatus.service"
 import type { BookType } from "../types/book"
 
@@ -12,7 +12,10 @@ const books = ref<BookType[]>([])
 
 onMounted(async () => {
     try {
-        books.value = await BooksWithStatusesService.get("reading")
+        books.value = (await BooksWithStatusesService.get("reading")).map((b) => {
+            b.status = "reading"
+            return b
+        })
     } catch (e) {
         if (e instanceof Error) {
             error.value = e.message
@@ -36,7 +39,7 @@ onMounted(async () => {
 
         <BookList v-else :books="books">
             <template #default="{ book }">
-                <DummyBook :book="book" />
+                <Book :book="book" />
             </template>
         </BookList>
     </div>
