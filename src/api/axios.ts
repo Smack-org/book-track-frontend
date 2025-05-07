@@ -19,7 +19,7 @@ export function createAuthApiInstance(baseURL: string): AxiosInstance {
             if (error.response?.status === 401) {
                 const authStore = useAuthStore()
                 authStore.logout()
-                window.location.href = "/login"
+                window.location.href = "/auth/login"
             }
             return Promise.reject(new Error(error))
         }
