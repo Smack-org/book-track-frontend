@@ -24,7 +24,7 @@ type SearchParams = {
 export const BookService = {
     async getBookById(id: number): Promise<BookType> {
         try {
-            const response = await apiClient.get<ApiSearchResponse>(`/books`, {
+            const response = await apiClient.get<ApiSearchResponse>(`/books/`, {
                 params: { ids: id },
             })
 
@@ -40,7 +40,7 @@ export const BookService = {
 
     async getBooksByIds(ids: number[]): Promise<BookType[]> {
         try {
-            const response = await apiClient.get<ApiSearchResponse>(`/books`, {
+            const response = await apiClient.get<ApiSearchResponse>(`/books/`, {
                 params: { ids },
             })
             return response.data.results.map((b) => adaptBookFromDTO(b))
@@ -51,7 +51,7 @@ export const BookService = {
 
     async searchBooks({ query, sort, topic, page }: SearchParams): Promise<SearchResult> {
         try {
-            const response = await apiClient.get<ApiSearchResponse>("/books", {
+            const response = await apiClient.get<ApiSearchResponse>("/books/", {
                 params: { search: query, sort, topic, page },
             })
             return {

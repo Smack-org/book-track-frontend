@@ -20,7 +20,7 @@ export const BooksWithStatusesService = {
         }
 
         try {
-            const { data } = await api.get<GetReadingListsResponse, AxiosResponse<GetReadingListsResponse>, GetReadingListsParameters>(USER_SERVICE_URL + "/reading-list", { params })
+            const { data } = await api.get<GetReadingListsResponse, AxiosResponse<GetReadingListsResponse>, GetReadingListsParameters>(USER_SERVICE_URL + "/reading-list/", { params })
 
             if (!Array.isArray(data)) {
                 throw new Error(`get books with status: Invalid response format ${data}`)
@@ -59,7 +59,7 @@ export const BooksWithStatusesService = {
             status: status,
         }
         try {
-            const data = await api.post<AddToReadingListRequest, AddToReadingListResponse>(USER_SERVICE_URL + "/reading-list", payload)
+            const data = await api.post<AddToReadingListRequest, AddToReadingListResponse>(USER_SERVICE_URL + "/reading-list/", payload)
             return data
         } catch (e) {
             throw handleApiError(e)

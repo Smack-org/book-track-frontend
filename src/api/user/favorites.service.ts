@@ -9,7 +9,7 @@ const api = createAuthApiInstance(USER_SERVICE_URL)
 export const FavoritesService = {
     async getFavoriteBooks(): Promise<BookType[]> {
         try {
-            const { data } = await api.get<GetFavoriteBooksResponse>(USER_SERVICE_URL + "/favourites")
+            const { data } = await api.get<GetFavoriteBooksResponse>(USER_SERVICE_URL + "/favourites/")
             return data.map((b) => adaptBookFromDTO(b.book))
         } catch (e) {
             throw handleApiError(e)
@@ -29,7 +29,7 @@ export const FavoritesService = {
             book_id: bookId,
         }
         try {
-            await api.post<AddFavoriteBookRequest, AddFavoriteBookResponse>(USER_SERVICE_URL + "/favourites", payload)
+            await api.post<AddFavoriteBookRequest, AddFavoriteBookResponse>(USER_SERVICE_URL + "/favourites/", payload)
         } catch (e) {
             throw handleApiError(e)
         }
