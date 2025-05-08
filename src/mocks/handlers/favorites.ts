@@ -13,7 +13,7 @@ import type {
 const USER_SERVICE_URL = import.meta.env.VITE_USER_SERVICE_URL
 
 export default function (allBooks: BookDTO[]) {
-    const getFavoriteBooks = (): BookDTO[] => allBooks.filter((book) => book.is_favorite)
+    const getFavoriteBooks = (): BookDTO[] => allBooks.filter((book) => book.is_favourite)
 
     return [
         http.get<GetFavoriteBooksParameters, object, GetFavoriteBooksResponse>(
@@ -32,7 +32,7 @@ export default function (allBooks: BookDTO[]) {
                 const { book_id: bookId } = await request.json()
 
                 const addedBook = allBooks.find((book) => book.id === bookId)!
-                addedBook.is_favorite = true
+                addedBook.is_favourite = true
 
                 const response = { book: addedBook, added_at: new Date().toISOString() }
                 return HttpResponse.json(response)
@@ -45,7 +45,7 @@ export default function (allBooks: BookDTO[]) {
                 const book_id = parseInt(params.book_id)
 
                 const removedBook = allBooks.find((book) => book.id === book_id)!
-                removedBook.is_favorite = false
+                removedBook.is_favourite = false
 
                 const response = { book: removedBook, added_at: new Date().toISOString() }
                 return HttpResponse.json(response)

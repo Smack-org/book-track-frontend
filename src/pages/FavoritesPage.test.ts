@@ -38,8 +38,8 @@ describe("FavoritesPage", () => {
 
     it("renders books on successful fetch", async () => {
         const mockBooks: BookType[] = [
-            { id: 1, title: "Book One", authors: [], summaries: [], translators: [], subjects: [], bookshelves: [], copyright: false, is_favorite: true, status: "want" },
-            { id: 2, title: "Book Two", authors: [], summaries: [], translators: [], subjects: [], bookshelves: [], copyright: false, is_favorite: true, status: "done" },
+            { id: 1, title: "Book One", authors: [], summaries: [], translators: [], subjects: [], bookshelves: [], copyright: false, is_favourite: true, status: "want" },
+            { id: 2, title: "Book Two", authors: [], summaries: [], translators: [], subjects: [], bookshelves: [], copyright: false, is_favourite: true, status: "done" },
         ]
 
         vi.mocked(FavoritesService.getFavoriteBooks).mockResolvedValue(mockBooks)

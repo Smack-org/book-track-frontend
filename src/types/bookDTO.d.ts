@@ -11,7 +11,7 @@ export type BookDTO = {
     media_type: BookDTOMediaType
     formats: BookDTOFromats
     download_count: number
-    is_favorite: boolean
+    is_favourite: boolean
     status: BookDTOStatus
 }
 

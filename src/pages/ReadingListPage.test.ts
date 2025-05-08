@@ -35,7 +35,7 @@ const createBook = (id: number, title: string): BookType => ({
     subjects: [],
     bookshelves: [],
     copyright: false,
-    is_favorite: false,
+    is_favourite: false,
     status: "reading",
 })
 

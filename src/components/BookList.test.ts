@@ -8,7 +8,7 @@ const createMockBook = (overrides: Partial<BookType> = {}): BookType => ({
     title: "Default Book",
     authors: [{ name: "Default Author" }],
     subjects: ["Default Subject"],
-    is_favorite: false,
+    is_favourite: false,
     status: "want",
     summaries: [],
     translators: [],

@@ -23,6 +23,6 @@ export type BookType = {
     subjects: string[]
     bookshelves: string[]
     copyright: boolean
-    is_favorite: boolean
+    is_favourite: boolean
     status: BookStatus
 }

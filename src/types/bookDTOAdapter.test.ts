@@ -52,7 +52,7 @@ describe("adaptBookFromDTO", () => {
                 "application/octet-stream": "http://example.com/octet",
             },
             download_count: 1234,
-            is_favorite: true,
+            is_favourite: true,
             status: "want_to_read",
         }
 
@@ -62,6 +62,6 @@ describe("adaptBookFromDTO", () => {
         expect(result.title).toBe(dto.title)
         expect(result.authors).toEqual([{ name: "George Orwell" }])
         expect(result.status).toBe("want")
-        expect(result.is_favorite).toBe(true)
+        expect(result.is_favourite).toBe(true)
     })
 })

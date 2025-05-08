@@ -24,7 +24,7 @@ const mockBook: BookType = {
         { name: "Author Two", birth_year: 1950, death_year: 2020 },
     ],
     subjects: ["Fiction", "Science Fiction"],
-    is_favorite: false,
+    is_favourite: false,
     status: "want",
     summaries: [],
     translators: [],

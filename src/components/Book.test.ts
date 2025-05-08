@@ -27,7 +27,7 @@ const mockBook: BookType = {
         { name: "Author Two", birth_year: 1950, death_year: 2020 },
     ],
     subjects: ["Fiction", "Science Fiction"],
-    is_favorite: false,
+    is_favourite: false,
     status: "want",
     summaries: [],
     translators: [],
@@ -128,13 +128,13 @@ describe("BookComponent", () => {
 
         await button.trigger("click")
         expect(mockSetFavorite).toHaveBeenCalledWith(mockBook.id, true)
-        expect(wrapper.vm.book.is_favorite).toBe(true)
+        expect(wrapper.vm.book.is_favourite).toBe(true)
         await nextTick()
         expect(button.text()).toContain("remove from favorites")
 
         await button.trigger("click")
         expect(mockSetFavorite).toHaveBeenCalledWith(mockBook.id, false)
-        expect(wrapper.vm.book.is_favorite).toBe(false)
+        expect(wrapper.vm.book.is_favourite).toBe(false)
         await nextTick()
         expect(button.text()).toContain("add to favorites")
     })
@@ -158,7 +158,7 @@ describe("BookComponent", () => {
     })
 
     it("displays correct favorite button text based on initial state", () => {
-        const favoriteBook = { ...mockBook, is_favorite: true }
+        const favoriteBook = { ...mockBook, is_favourite: true }
         const wrapper = mount(Book, {
             props: { book: favoriteBook },
             global: {

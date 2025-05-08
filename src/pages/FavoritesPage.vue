@@ -13,7 +13,7 @@ const books = ref<BookType[]>([])
 onMounted(async () => {
     try {
         books.value = (await FavoritesService.getFavoriteBooks()).map((b) => {
-            b.is_favorite = true
+            b.is_favourite = true
             return b
         })
     } catch (e) {

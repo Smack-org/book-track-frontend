@@ -13,7 +13,7 @@ const mockBook: BookType = {
     subjects: ["Fiction"],
     bookshelves: ["Test Shelf"],
     copyright: true,
-    is_favorite: false,
+    is_favourite: false,
     status: "want",
 }
 

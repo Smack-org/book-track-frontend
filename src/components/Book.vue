@@ -19,8 +19,8 @@ const bookLink = computed(() => {
 })
 
 const toggleFavorite = () => {
-    book.is_favorite = !book.is_favorite
-    FavoritesService.setFavoriteBook(book.id, book.is_favorite)
+    book.is_favourite = !book.is_favourite
+    FavoritesService.setFavoriteBook(book.id, book.is_favourite)
 }
 
 watch(
@@ -60,7 +60,7 @@ watch(
 
         <div>
             <button @click="toggleFavorite">
-                {{ book.is_favorite ? "remove from favorites" : "add to favorites" }}
+                {{ book.is_favourite ? "remove from favorites" : "add to favorites" }}
             </button>
         </div>
 

@@ -67,7 +67,7 @@ export function generateMockBookDTOs(count: number): BookDTO[] {
                     : {}),
             },
             download_count: downloadCount,
-            is_favorite: Math.random() > 0.7,
+            is_favourite: Math.random() > 0.7,
             status: STATUSES[Math.floor(Math.random() * STATUSES.length)],
         }
     })
@@ -76,7 +76,7 @@ export function generateMockBookDTOs(count: number): BookDTO[] {
 export function convertBookToDTO(book: BookType): BookDTO {
     return {
         ...book,
-        is_favorite: book.is_favorite,
+        is_favourite: book.is_favourite,
         languages: [BookDTOLanguage.En],
         media_type: BookDTOMediaType.Text,
         formats: BASE_FORMATS,

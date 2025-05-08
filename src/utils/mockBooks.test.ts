@@ -27,7 +27,7 @@ describe("generateMockBookDTOs", () => {
         expect(result.languages).toContain(BookDTOLanguage.En)
         expect(result).toHaveProperty("media_type", BookDTOMediaType.Text)
         expect(typeof result.download_count).toBe("number")
-        expect(typeof result.is_favorite).toBe("boolean")
+        expect(typeof result.is_favourite).toBe("boolean")
     })
 })
 
@@ -41,7 +41,7 @@ describe("convertBookToDTO", () => {
             translators: [],
             subjects: ["Fiction"],
             bookshelves: ["Featured"],
-            is_favorite: true,
+            is_favourite: true,
             status: "reading",
             copyright: true,
         }
@@ -54,7 +54,7 @@ describe("convertBookToDTO", () => {
         expect(dto.summaries).toEqual(book.summaries)
         expect(dto.subjects).toEqual(book.subjects)
         expect(dto.bookshelves).toEqual(book.bookshelves)
-        expect(dto.is_favorite).toBe(book.is_favorite)
+        expect(dto.is_favourite).toBe(book.is_favourite)
         expect(dto.languages).toEqual([BookDTOLanguage.En])
         expect(dto.media_type).toBe(BookDTOMediaType.Text)
         expect(dto.formats["text/html"]).toBeDefined()

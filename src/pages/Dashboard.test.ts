@@ -46,7 +46,7 @@ const mockBooks = (label: string = "", n = 2): BookType[] =>
         subjects: [],
         bookshelves: [],
         copyright: false,
-        is_favorite: false,
+        is_favourite: false,
         status: "--",
     }))
 
